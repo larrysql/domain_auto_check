@@ -1,0 +1,208 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title></title>
+    <!--<meta http-equiv="refresh" content="10">-->
+    <link rel="stylesheet" type="text/css" href="../static/Styles/admin-all.css" />
+    <link rel="stylesheet" type="text/css" href="../static/Styles/base.css"/>
+    <link rel="stylesheet" type="text/css" href="../static/Styles/bootstrap.min.css"/>
+    <link rel="stylesheet" type="text/css" href="../static/Styles/select2.min.css"/>
+    <script type="text/javascript" src="../static/Scripts/jquery-1.7.2.js"></script>
+    <script type="text/javascript" src="../static/Scripts/select2.min.js"></script>
+    <script type="text/javascript" src="../static/Scripts/zh-CN.js"></script>
+    <script type="text/javascript" src="../static/Scripts/jquery-ui-1.8.22.custom.min.js"></script>
+    <script type="text/javascript" src="../static/Scripts/page.js"></script>
+    <script type="text/javascript" src="../static/Scripts/laydate.js"></script>
+    <script type="text/javascript" src="../static/Scripts/echarts.common.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="../static/Styles/ui-lightness/jquery-ui-1.8.22.custom.css" />
+    <link rel="stylesheet" type="text/css" href="../static/Styles/formui.css"/>
+    <style type="text/css">
+    table.gridtable {
+        width:100%;
+    	font-family: verdana,arial,sans-serif;
+    	color:#333333;
+    	border-width: 1px;
+    	border-color: #666666;
+    	border-collapse: collapse;
+    }
+    table.gridtable th {
+    	border-width: 1px;
+    	padding: 8px;
+    	border-style: solid;
+    	border-color: #666666;
+    	background-color: #99BBFF;
+        font-size:12px;
+        text-align:center;
+    }
+    table.gridtable td {
+    	border-width: 1px;
+    	padding: 8px;
+    	border-style: solid;
+    	border-color: #666666;
+    	background-color: #ffffff;
+        font-size:10px;
+        text-align:center;
+    }
+    </style>
+
+</head>
+<body>
+    <!-- <div class="alert alert-info" id="title">当前位置<b class="tip"></b>ORACLE监控<b class="tip"></b>{{tag}}</div> -->
+   <!-- Table goes in the document BODY -->
+    <div class="alert alert-info" id="title" style="float:left;width:100%;">
+        <div style="float:left;height: 20px">
+            <!-- &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; -->
+            <a href="/domain_push_loc_stat?push_type={{push_type}}&period=h"><b>1小时</b></a>
+      &nbsp;&nbsp;&nbsp;&nbsp;
+      <a href="/domain_push_loc_stat?push_type={{push_type}}&period=d"><b>一天</b></a>
+      &nbsp;&nbsp;&nbsp;&nbsp;
+      <a href="/domain_push_loc_stat?push_type={{push_type}}&period=w"><b>一星期</b></a>
+      &nbsp;&nbsp;&nbsp;&nbsp;
+      <a href="/domain_push_loc_stat?push_type={{push_type}}&period=m"><b>一个月</b></a>
+      &nbsp;&nbsp;&nbsp;&nbsp; 
+      <a href="/domain_push_loc_stat?inst_id={{inst_id}}&period=3m"><b>三个月</b></a>
+        &nbsp;&nbsp;&nbsp; <b>自定义:&nbsp;&nbsp;&nbsp;&nbsp;</b>
+               <form style="margin:0px;display:inline" action="/domain_push_loc_stat" method="POST" id="dateform">
+                    <input placeholder="请输入起始日期" name="begin_date" class="laydate-icon" onclick="laydate({istime: true, format: 'YYYY-MM-DD hh:mm:ss'})"  style="width:130px">
+                    &nbsp;&nbsp;<input placeholder="请输入结束日期" name="end_date" class="laydate-icon" onclick="laydate({istime: true, format: 'YYYY-MM-DD hh:mm:ss'})" style="width:130px">
+                   &nbsp;&nbsp;<input type="submit" style="display:inline" value="查询"/>
+                   <input type="hidden" name="push_type" value={{push_type}}>
+               </form>
+                  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+      <input type="text" id="myInput" onkeyup="myFunction()" placeholder="在结果中搜索..." style="width:130px">
+      {% if push_type == 'p'  %}
+            <a href="/domain_push_loc_stat?push_type=m&period=d"><input type="submit" style="display:inline" value="移动端统计"/></a>
+            {% else %}
+             <a href="/domain_push_loc_stat?push_type=p&period=d"><input type="submit" style="display:inline" value="PC端统计"/></a>
+      {% endif %}
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+      {% if stat_type == 'domain' %}
+        <a href="/domain_push_loc_stat?push_type=p&period=d"><input type="submit" style="display:inline" value="按地区统计"/></a>
+      {% else %}
+             <a href="/domain_push_stat?push_type=p&period=d"><input type="submit" style="display:inline" value="按域名统计"/></a>
+      {% endif %}
+        </div>
+    </div>
+     <!-- 查询范围:  -->
+
+    <div  style="clear:both;float:left;width:50%;">
+
+    <table class="gridtable" id="domain_table">
+    <tr>
+    	<th style="width:20%">序号</th><th style="width:30%">地区</th><th style="width:35%">推送次数</th><th >推送类型</th>
+    </tr>
+    {% for row in rs %}
+        <tr>
+            <td>{{row[0]}}</td>
+            <td>{{row[1]}}</td>
+            <td>{{row[2]}}</td>
+            <td>{{row[3]}}</td>
+        </tr>
+    {% endfor %}
+    </table>
+    <div id="tab_page">
+		<br>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+		<a id="btn0"></a>
+		<input id="pageSize" type="text" type="text" style="width:30px;" maxlength="2" value="getDefaultValue()"/><a> 条 </a> <a href="#" id="pageSizeSet">设置</a> 
+		<a id="sjzl"></a> 
+		<a  href="#" id="btn1">首页</a>
+		<a  href="#" id="btn2">上一页</a>
+		<a  href="#" id="btn3">下一页</a>
+		<a  href="#" id="btn4">尾页</a> 
+		<a>转到 </a>
+		<input id="changePage" type="text" style="width:30px;" maxlength="2/>
+		<a>页 </a>
+		<a  href="#" id="btn5">跳转</a>
+	</div>
+</div>
+
+<div id="chart" style="height:600px; width:50%; float:left;">
+        <div id="push_stat_chart" style="height:300px; width:100%;"></div>
+<!--         <div id="laxin_user_recharge" style="height:300px; width:100%;"></div> -->
+    </div>
+<script type="text/javascript">
+  var push_stat_chart = echarts.init(document.getElementById('push_stat_chart'));
+  //推送top10域名
+     push_stat_chart.setOption({
+         title : {
+        // text: '推送top10域名',
+        text:'大区推送排名',
+        // subtext: '纯属虚构',
+        x:'center'
+        },
+         tooltip : {
+        trigger: 'item',
+        formatter: "{a} <br/>{b} : {c} ({d}%)"
+        }
+     });
+     
+    push_stat_chart.setOption({
+       legend : {
+          orient : 'vertical',
+          x : 'left',
+          data:{{l_data|safe}},
+          }, 
+         series : [
+            {
+            name: '推送次数',
+            type: 'pie',
+            radius : '60%',
+            center: ['55%', '60%'],
+            data:{{s_data|safe}},
+            itemStyle: {
+                emphasis: {
+                    shadowBlur: 10,
+                    shadowOffsetX: 0,
+                    shadowColor: 'rgba(0, 0, 0, 0.5)'
+                    }
+                }
+            }
+       ],
+    });
+
+
+function myFunction() {
+  // 声明变量
+  var input, filter, table, tr, td, i;
+  input = document.getElementById("myInput");
+  filter = input.value.toUpperCase();
+  table = document.getElementById("domain_table");
+  tr = table.getElementsByTagName("tr");
+  tab_page = document.getElementById("tab_page");
+  tab_page_show = true;
+ 
+  // 循环表格每一行，查找匹配项
+  for (i = 0; i < tr.length; i++) {
+    td = tr[i].getElementsByTagName("td")[1];
+    if (td) {
+      if (td.innerHTML.toUpperCase().indexOf(filter) > -1) {
+        tr[i].style.display = "";
+		tab_page_show = false;
+      } else {
+        tr[i].style.display = "none";
+      }
+    } 
+  }
+  if (tab_page_show == false && filter.length >0){
+	tab_page.style.display = "none";
+  }
+}
+
+</script>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,156 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title></title>
+    <!--<meta http-equiv="refresh" content="10">-->
+    <link rel="stylesheet" type="text/css" href="../static/Styles/admin-all.css" />
+    <link rel="stylesheet" type="text/css" href="../static/Styles/base.css"/>
+    <link rel="stylesheet" type="text/css" href="../static/Styles/bootstrap.min.css"/>
+    <link rel="stylesheet" type="text/css" href="../static/Styles/select2.min.css"/>
+    <script type="text/javascript" src="../static/Scripts/jquery-1.7.2.js"></script>
+    <script type="text/javascript" src="../static/Scripts/select2.min.js"></script>
+    <script type="text/javascript" src="../static/Scripts/zh-CN.js"></script>
+    <script type="text/javascript" src="../static/Scripts/jquery-ui-1.8.22.custom.min.js"></script>
+    <script type="text/javascript" src="../static/Scripts/page.js"></script>
+    <link rel="stylesheet" type="text/css" href="../static/Styles/ui-lightness/jquery-ui-1.8.22.custom.css" />
+    <link rel="stylesheet" type="text/css" href="../static/Styles/formui.css"/>
+
+    <!--<script type="text/javascript" src="../static/Scripts/tb.js"></script> -->
+    <script>
+    window.onload=function(){
+      // var tb=document.getElementById("DataGrid1");
+      // var cbs=tb.getElementsByTagName("input");
+      // for(var i=0;i<cbs.length;i++)
+      // {
+      // if(cbs[i].type=="checkbox")
+      // {
+      // cbs[i].checked=true;
+      // }
+      // }
+      signal = "{{signal}}";
+      if(signal=='update_domain')
+      {
+        alert("修改成功!");
+      };
+      if(signal=='delete_domain')
+      {
+        alert("删除成功!");
+      };
+      if(signal=='add_domain')
+      {
+        alert("增加成功!");
+      };
+      if(signal=='disable_domain')
+      {
+        alert("禁用成功!");
+      };
+      if(signal=='enable_domain')
+      {
+        alert("启用成功!");
+      };
+    }
+    </script>
+    <script>
+        $(function(){
+        $("#demo").select2({
+        theme: "classic",
+        tags: true,
+        width:"150" ,
+        maximumSelectionLength: 1
+        });
+        });
+    </script>
+    <style type="text/css">
+    table.gridtable {
+        width:100%;
+    	font-family: verdana,arial,sans-serif;
+    	color:#333333;
+    	border-width: 1px;
+    	border-color: #666666;
+    	border-collapse: collapse;
+    }
+    table.gridtable th {
+    	border-width: 1px;
+    	padding: 8px;
+    	border-style: solid;
+    	border-color: #666666;
+    	background-color: #99BBFF;
+        font-size:10px;
+        text-align:center;
+    }
+    table.gridtable td {
+    	border-width: 1px;
+    	padding: 8px;
+    	border-style: solid;
+    	border-color: #666666;
+    	background-color: #ffffff;
+        font-size:10px;
+        text-align:center;
+    }
+    </style>
+
+</head>
+<body>
+   <div class="alert alert-info" id="title" style="float:left;width:100%;height: 30px">     
+        <form  action="/get_update_search" method="POST" name=tool>
+        域名&nbsp;&nbsp;<input name="dm" value="" type="text" style="width:150px">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        账号信息&nbsp;&nbsp;<select  name="accounts" value="" style="width:100px">
+                   <option value=''</option>
+                   {% for ac in acs %}
+                   <option value={{ac}}>{{ac}}</option>
+                   {% endfor %}
+               </select>
+        <input type="submit"  value="godaddy域名同步" name="submit">
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        <input type="submit" value="查询" name="submit">
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        <a  href="/add_account_h">添加godaddy账号</a>
+        </form>
+    </div>
+    <div  style="clear:both;"">
+    <table class="gridtable" id="domain_table">
+    <tr>
+    	<th>域名</th><th width=10%>操作</th>
+    </tr>
+    {% for row in rs %}
+        <tr>
+            <td>{{row[0]}}</td>
+            <td>
+            <a href="/edit_domain?domain={{row[0]}}">编辑</a>
+        </tr>
+    {% endfor %}
+    </table>
+</div>
+<center>
+<br>
+<a id="btn0"></a>
+<input id="pageSize" type="text" type="text" style="width:30px;" maxlength="2" value="getDefaultValue()"/><a> 条 </a> <a href="#" id="pageSizeSet">设置</a> 
+<a id="sjzl"></a> 
+<a  href="#" id="btn1">首页</a>
+<a  href="#" id="btn2">上一页</a>
+<a  href="#" id="btn3">下一页</a>
+<a  href="#" id="btn4">尾页</a> 
+<a>转到 </a>
+<input id="changePage" type="text" style="width:30px;" maxlength="2/>
+<a>页 </a>
+<a  href="#" id="btn5">跳转</a>
+</center>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,185 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<!-- <meta http-equiv="refresh" content="10"> -->
+<title>js</title>
+    <link rel="stylesheet" type="text/css" href="../static/Styles/admin-all.css" />
+    <link rel="stylesheet" type="text/css" href="../static/Styles/base.css"/>
+    <script type="text/javascript" src="../static/Scripts/jquery-1.7.2.js"></script>
+    <script type="text/javascript" src="../static/Scripts/jquery-ui-1.8.22.custom.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="../static/Styles/ui-lightness/jquery-ui-1.8.22.custom.css" />
+    <link rel="stylesheet" type="text/css" href="../static/Styles/formui.css"/>
+<!--     <link rel="stylesheet" type="text/css" href="../static/Styles/tab_list.css"/>
+    <script type="text/javascript" src="../static/Scripts/tab_list.js"></script>
+    <link rel="stylesheet" type="text/css" href="../static/Styles/tab_list2.css"/> -->
+    <script type="text/javascript" src="../static/Scripts/tab_list2.js"></script>
+    <link rel="stylesheet" type="text/css" href="../static/Styles/tab_list3.css"/>
+    <style type="text/css">
+            #title{
+                margin:4px;
+            }
+    </style>
+    <style type="text/css">
+    table.gridtable {
+        width:95%;
+        font-family: verdana,arial,sans-serif;
+        color:#333333;
+        border-width: 1px;
+        border-color: #666666;
+        border-collapse: collapse;
+    }
+    table.gridtable th {
+        border-width: 1px;
+        padding: 8px;
+        border-style: solid;
+        border-color: #666666;
+        /*background-color: #99BBFF;*/
+        font-size:12px;
+        text-align:center;
+    }
+    table.gridtable td {
+        border-width: 1px;
+        padding: 8px;
+        border-style: solid;
+        border-color: #666666;
+        /*background-color: #ffffff;*/
+        font-size:11px;
+        text-align:center;
+    }
+    </style>
+</head>
+    <body>  
+       <!--选项卡-->
+        <form  action=/domain_mon method="POST" name="choose" >
+	&nbsp;&nbsp;&nbsp;&nbsp;<input value="全部" name="submit" type="submit">>>><input value="一号站" name="submit" type="submit">---<input value="二号站" name="submit" type="submit">---<input value="市场" name="submit" type="submit">---<input value="穿云梯" name="submit" type="submit"> 
+        </form>
+	<div id="tab">  
+            <!--选项的头部-->  
+            <div id="tab-header">  
+                <ul>  
+                    {% for loc in l_loc %}
+                        {% if loc == '深圳' %}
+                            <li class="selected">{{loc}}</li>  
+                        {% else %}
+                            <li>{{loc}}</li>
+                        {% endif %}
+                    {% endfor %}
+                </ul>  
+            </div>  
+            <!--主要内容-->  
+            <div id="tab-content">  
+                {% for x in l_all %}
+                    {% if x[0] == '深圳' %}
+                        <div class="dom" style="display: block;"  ><br>
+                            <table class="gridtable">
+                                <tr>
+                                    <th align="center">地区</th><th>域名</th><th>打开率</th><th>DNS解析时间</th><th>打开时间</th><th>返回码</th>
+                                </tr>  
+                                {% if x[1][0][1]>60 and (x[1][0][4] == '200' or x[1][0][4] == '302') %}                         
+                                <tr style="color:blue">
+                                {% else %}
+                                <tr style="color:red">   
+                                {% endif %}  
+                                    <td rowspan={{x[1]|count}}>{{x[0]}}</td><td>{{x[1][0][0]}}</td><td>{{x[1][0][1]}}%</td><td>{{x[1][0][2]}}</td><td>{{x[1][0][3]}}秒</td><td>{{x[1][0][4]}}</td>
+                                </tr>
+                            {% for y in x[1] %}
+                                {% if loop.index0>0 %}
+                                    {% if y[1]>60 and (y[4] == '200' or y[4] == '302') %}
+                                    <tr style="color:blue"> 
+                                     {% else %}
+                                    <tr style="color:red">   
+                                    {% endif %}                       
+                                        <td>{{y[0]}}</td><td>{{y[1]}}%</td><td>{{y[2]}}</td><td>{{y[3]}}秒</td><td>{{y[4]}}</td>  
+                                    </tr>
+                                {% endif %}
+                            {% endfor %}
+                            </table>
+                        </div>
+                    {% else %}
+                        <div class="dom">  
+                        <br>
+                        <table class="gridtable">
+                                <tr>
+                                    <th align="center">地区</th><th>域名</th><th>打开率</th><th>DNS解析时间</th><th>打开时间</th><th>返回码</th>
+                                </tr>
+                                {% if x[1][0][1]>60 and (x[1][0][4] == '200' or x[1][0][4] == '302') %}                         
+                                <tr style="color:blue">
+                                {% else %}
+                                <tr style="color:red">   
+                                {% endif %}  
+                                    <td rowspan={{x[1]|count}}>{{x[0]}}</td><td>{{x[1][0][0]}}</td><td>{{x[1][0][1]}}%</td><td>{{x[1][0][2]}}</td><td>{{x[1][0][3]}}秒</td><td>{{x[1][0][4]}}</td>
+                            </tr>
+                            {% for y in x[1] %}
+                                {% if loop.index0>0 %}
+                                 {% if y[1]>60 and (y[4] == '200' or y[4] == '302') %}
+                                <tr style="color:blue"> 
+                                {% else %}
+                                <tr style="color:red">   
+                                {% endif %}           
+                                    <td>{{y[0]}}</td><td>{{y[1]}}%</td><td>{{y[2]}}</td><td>{{y[3]}}秒</td><td>{{y[4]}}</td>  
+                                </tr>
+                                {% endif %}
+                            {% endfor %}
+                        </table>
+                        </div>  
+                    {% endif %}
+                {% endfor %}
+            </div>  
+        </div>  
+    <!-- <script type="text/javascript">
+     function json_data(loc_name,type){
+                        var data_graph;
+                        $.ajax({
+                            url: "/get_domain_sort",
+                            data:"loc_name='" + loc_name + "'&type='" + type + "'",
+                            type: "GET",
+                            async: false,
+                            success: function (data) {
+                               data_graph = data;
+                            }
+                        });
+                        return data_graph;
+                    }
+    var s_data6 = eval(json_data('深圳','data'));
+    var shenzhen = echarts.init(document.getElementById('深圳'));
+ //拉新活动用户投注额top10
+     shenzhen.setOption({
+         title : {
+        // text: '某站点用户访问来源',
+        text:'投注额top10',
+        // subtext: '纯属虚构',
+        x:'center'
+        },
+         tooltip : {
+        trigger: 'item',
+        formatter: "{a} <br/>{b} : {c} ({d}%)"
+        }
+     });
+     
+    shenzhen.setOption({
+       legend : {
+          orient : 'vertical',
+          x : 'left',
+          data :s_data6
+          }, 
+         series : [
+       {
+       name: '投注额',
+       type: 'pie',
+       radius : '60%',
+       center: ['50%', '50%'],
+       data:s_data6,
+       itemStyle: {
+           emphasis: {
+               shadowBlur: 10,
+               shadowOffsetX: 0,
+               shadowColor: 'rgba(0, 0, 0, 0.5)'
+               }
+           }
+       }
+       ],
+    });
+    </script> -->
+    </body>  
+</html>

@@ -1,0 +1,119 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title></title>
+    <!--<meta http-equiv="refresh" content="10">-->
+    <link rel="stylesheet" type="text/css" href="../static/Styles/admin-all.css" />
+    <link rel="stylesheet" type="text/css" href="../static/Styles/base.css"/>
+    <link rel="stylesheet" type="text/css" href="../static/Styles/bootstrap.min.css"/>
+    <link rel="stylesheet" type="text/css" href="../static/Styles/select2.min.css"/>
+    <script type="text/javascript" src="../static/Scripts/jquery-1.7.2.js"></script>
+    <script type="text/javascript" src="../static/Scripts/select2.min.js"></script>
+    <script type="text/javascript" src="../static/Scripts/zh-CN.js"></script>
+    <script type="text/javascript" src="../static/Scripts/jquery-ui-1.8.22.custom.min.js"></script>
+<!--     <script type="text/javascript" src="../static/Scripts/page.js"></script> -->
+    <script type="text/javascript" src="../static/Scripts/tree.jquery.js"></script>
+    <link rel="stylesheet" type="text/css" href="../static/Styles/ui-lightness/jquery-ui-1.8.22.custom.css" />
+    <link rel="stylesheet" type="text/css" href="../static/Styles/formui.css"/>
+    <link rel="stylesheet" type="text/css" href="../static/Styles/jqtree.css"/>
+    <!--<script type="text/javascript" src="../static/Scripts/tb.js"></script> -->
+    
+    <script>
+        $(function() {
+          var $tree = $('#tree1');
+          $tree.tree({
+            autoEscape: false,
+            autoOpen: true,
+            onCreateLi: function(node, $li) {
+            // Append a link to the jqtree-element div.
+            // The link has an url '#node-[id]' and a data property 'node-id'.
+                $li.find('.jqtree-element').append(
+                    // '<a href="#node-'+ node.id +'" class="edit" data-node-id="'+
+                    '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="/edit_priv_node?node_id='+ node.id +'" class="edit" data-node-id="'+
+                    node.id +'">编辑</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="/edit_priv_node?node_id='+ node.id +'" class="edit" data-node-id="'+
+                    node.id +'">删除</a>'
+                );
+            }
+            });
+          // Handle a click on the edit link
+          $tree.on(
+              'click', '.edit',
+              function(e) {
+                  // Get the id from the 'node-id' data property
+                  var node_id = $(e.target).data('node-id');
+
+                  // Get the node from the tree
+                  var node = $tree.tree('getNodeById', node_id);
+
+                  if (node) {
+                      // Display the node name
+                      alert(node.name);
+                  }
+              }
+          );
+        });
+    </script>
+
+    <style type="text/css">
+    table.gridtable {
+        width:100%;
+    	font-family: verdana,arial,sans-serif;
+    	color:#333333;
+    	border-width: 1px;
+    	border-color: #666666;
+    	border-collapse: collapse;
+    }
+    table.gridtable th {
+    	border-width: 1px;
+    	padding: 8px;
+    	border-style: solid;
+    	border-color: #666666;
+    	background-color: #99BBFF;
+        font-size:10px;
+        text-align:center;
+    }
+    table.gridtable td {
+    	border-width: 1px;
+    	padding: 8px;
+    	border-style: solid;
+    	border-color: #666666;
+    	background-color: #ffffff;
+        font-size:10px;
+        text-align:center;
+    }
+    #scroll-container {
+      height: 300px;
+      overflow-y: scroll;
+      user-select: none;
+    }
+    </style>
+
+</head>
+<body>
+    <!-- <div class="alert alert-info" id="title">当前位置<b class="tip"></b>ORACLE监控<b class="tip"></b>{{tag}}</div> -->
+   <!-- Table goes in the document BODY -->
+   <div class="alert alert-info" id="title" style="float:left;width:100%;">
+    </div>
+    <div  style="clear:both;"">
+<div id="scroll-container">
+  <div id="tree1" data-url="/get_priv_json"></div>
+</div>
+
+</div>
+
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<head>
+    <meta charset="utf-8">
+   <title>ECharts</title>
+    <script type="text/javascript" src="../static/Scripts/echarts.common.min.js"></script>
+    <script type="text/javascript" src="../static/Scripts/jquery-1.7.2.js"></script>
+    
+</head>
+<body>
+     <!-- 为ECharts准备一个具备大小（宽高）的Dom -->
+    <div id="bet" style="height:300px; width:50%; float:left;"></div>
+    <div id="sale_lottery" style="height:300px; width:50%; float:left;"></div>
+    <div id="recharge" style="height:300px; width:50%; float:left;"></div>
+    <div id="user_count" style="height:300px; width:50%; float:left;"></div>
+    <div id="user_bind_card" style="height:300px; width:50%; float:left;"></div>
+    <div id="laxin_user_bet" style="height:300px; width:50%; float:left;"></div>
+    <div id="laxin_user_recharge" style="height:300px; width:50%; float:left;"></div>
+    <!-- ECharts单文件引入 -->
+    <script type="text/javascript">
+     function json_data(stat_name,type){
+                        var data_graph;
+                        $.ajax({
+                            url: "/top10_user_json",
+                            data:"stat_name='" + stat_name + "'&type='" + type + "'",
+                            type: "GET",
+                            async: false,
+                            success: function (data) {
+                               data_graph = data;
+                            }
+                        });
+                        return data_graph;
+                    }
+     var s_data1 = eval(json_data('top10_bet','data'));
+     var s_data2 = eval(json_data('top10_sale_lottery','data'));
+     var s_data3 = eval(json_data('top10_recharge','data'));
+     var s_data4 = eval(json_data('top10_user_cnt','data'));
+     var s_data5 = eval(json_data('top10_bind_card','data'));
+     // var s_data6 = eval(json_data('top10_laxin_user_bet','data'));
+     // var s_data7 = eval(json_data('top10_laxin_user_recharge','data'));
+     // var l_data1 = eval(json_data('top10_bet','name'));
+     // var l_data2 = eval(json_data('top10_sale_lottery','name'));
+     // var l_data3 = eval(json_data('top10_recharge','name'));
+     // var l_data4 = eval(json_data('top10_user_cnt','name'));
+     // var l_data5 = eval(json_data('top10_bind_card','name'));
+
+     // alert(s_data);
+     // var l_data = ['直接访问','邮件营销','联盟广告','视频广告','搜索引擎'] ;
+     // alert(typeof(l_data));
+     var bet = echarts.init(document.getElementById('bet'));
+     var sale_lottery = echarts.init(document.getElementById('sale_lottery'));
+     var recharge = echarts.init(document.getElementById('recharge'));
+     var user_count = echarts.init(document.getElementById('user_count'));
+     var user_bind_card = echarts.init(document.getElementById('user_bind_card'));
+     // var laxin_user_bet = echarts.init(document.getElementById('laxin_user_bet'));
+     // var laxin_user_recharge = echarts.init(document.getElementById('laxin_user_recharge'));
+// 投注额top10用户
+     bet.setOption({
+         title : {
+        // text: '某站点用户访问来源',
+        text:'投注额top10用户',
+        // subtext: '纯属虚构',
+        x:'center'
+        },
+         tooltip : {
+        trigger: 'item',
+        formatter: "{a} <br/>{b} : {c} ({d}%)"
+        }
+     });
+     
+    bet.setOption({
+       legend : {
+          orient : 'vertical',
+          x : 'left',
+          data :s_data1
+          }, 
+         series : [
+       {
+       name: '投注额',
+       type: 'pie',
+       radius : '55%',
+       center: ['50%', '60%'],
+       data:s_data1,
+       itemStyle: {
+           emphasis: {
+               shadowBlur: 10,
+               shadowOffsetX: 0,
+               shadowColor: 'rgba(0, 0, 0, 0.5)'
+               }
+           }
+       }
+       ],
+    });
+
+//销量top10彩种
+    sale_lottery.setOption({
+         title : {
+        // text: '某站点用户访问来源',
+        text:'销量top10彩种',
+        // subtext: '纯属虚构',
+        x:'center'
+        },
+         tooltip : {
+        trigger: 'item',
+        formatter: "{a} <br/>{b} : {c} ({d}%)"
+        }
+     });
+     
+    sale_lottery.setOption({
+       legend : {
+          orient : 'vertical',
+          x : 'left',
+          data :s_data2
+          }, 
+         series : [
+       {
+       name: '投注额',
+       type: 'pie',
+       radius : '55%',
+       center: ['50%', '60%'],
+       data:s_data2,
+       itemStyle: {
+           emphasis: {
+               shadowBlur: 10,
+               shadowOffsetX: 0,
+               shadowColor: 'rgba(0, 0, 0, 0.5)'
+               }
+           }
+       }
+       ],
+    });
+
+    //充值top10用户
+    recharge.setOption({
+         title : {
+        // text: '某站点用户访问来源',
+        text:'充值额top10用户',
+        // subtext: '纯属虚构',
+        x:'center'
+        },
+         tooltip : {
+        trigger: 'item',
+        formatter: "{a} <br/>{b} : {c} ({d}%)"
+        }
+     });
+     
+    recharge.setOption({
+       legend : {
+          orient : 'vertical',
+          x : 'left',
+          data :s_data3
+          }, 
+        series : [
+       {
+       name: '充值额',
+       type: 'pie',
+       radius : '55%',
+       center: ['50%', '60%'],
+       data:s_data3,
+       itemStyle: {
+           emphasis: {
+               shadowBlur: 10,
+               shadowOffsetX: 0,
+               shadowColor: 'rgba(0, 0, 0, 0.5)'
+               }
+           }
+       }
+       ],
+    });
+
+    //用户数最多的代理top10
+    user_count.setOption({
+         title : {
+        text:'用户数量最多的代理top10',
+        // subtext: '纯属虚构',
+        x:'center'
+        },
+         tooltip : {
+        trigger: 'item',
+        formatter: "{a} <br/>{b} : {c} ({d}%)"
+        }
+     });
+     
+    user_count.setOption({
+       legend : {
+          orient : 'vertical',
+          x : 'left',
+          data :s_data4
+          }, 
+         series : [
+       {
+       name: '用户数',
+       type: 'pie',
+       radius : '55%',
+       center: ['50%', '60%'],
+       data:s_data4,
+       itemStyle: {
+           emphasis: {
+               shadowBlur: 10,
+               shadowOffsetX: 0,
+               shadowColor: 'rgba(0, 0, 0, 0.5)'
+               }
+           }
+       }
+       ],
+    });
+
+    //绑卡最多的用户top10
+    user_bind_card.setOption({
+         title : {
+        text:'绑卡最多的用户top10',
+        // subtext: '纯属虚构',
+        x:'center'
+        },
+         tooltip : {
+        trigger: 'item',
+        formatter: "{a} <br/>{b} : {c} ({d}%)"
+        }
+     });
+     
+    user_bind_card.setOption({
+       legend : {
+          orient : 'vertical',
+          x : 'left',
+          data :s_data5
+          }, 
+         series : [
+       {
+       name: '绑卡数量',
+       type: 'pie',
+       radius : '55%',
+       center: ['50%', '60%'],
+       data:s_data5,
+       itemStyle: {
+           emphasis: {
+               shadowBlur: 10,
+               shadowOffsetX: 0,
+               shadowColor: 'rgba(0, 0, 0, 0.5)'
+               }
+           }
+       }
+       ],
+    });
+
+    // //拉新活动用户投注额top10
+    //  laxin_user_bet.setOption({
+    //      title : {
+    //     // text: '某站点用户访问来源',
+    //     text:'拉新活动用户投注额top10',
+    //     // subtext: '纯属虚构',
+    //     x:'center'
+    //     },
+    //      tooltip : {
+    //     trigger: 'item',
+    //     formatter: "{a} <br/>{b} : {c} ({d}%)"
+    //     }
+    //  });
+     
+    // laxin_user_bet.setOption({
+    //    legend : {
+    //       orient : 'vertical',
+    //       x : 'left',
+    //       data :s_data6
+    //       }, 
+    //      series : [
+    //    {
+    //    name: '投注额',
+    //    type: 'pie',
+    //    radius : '55%',
+    //    center: ['50%', '60%'],
+    //    data:s_data6,
+    //    itemStyle: {
+    //        emphasis: {
+    //            shadowBlur: 10,
+    //            shadowOffsetX: 0,
+    //            shadowColor: 'rgba(0, 0, 0, 0.5)'
+    //            }
+    //        }
+    //    }
+    //    ],
+    // });
+    // //拉新活动用户充值额top10
+    //  laxin_user_recharge.setOption({
+    //      title : {
+    //     // text: '某站点用户访问来源',
+    //     text:'拉新活动用户充值额top10',
+    //     // subtext: '纯属虚构',
+    //     x:'center'
+    //     },
+    //      tooltip : {
+    //     trigger: 'item',
+    //     formatter: "{a} <br/>{b} : {c} ({d}%)"
+    //     }
+    //  });
+     
+    // laxin_user_recharge.setOption({
+    //    legend : {
+    //       orient : 'vertical',
+    //       x : 'left',
+    //       data :s_data7
+    //       }, 
+    //      series : [
+    //    {
+    //    name: '充值额',
+    //    type: 'pie',
+    //    radius : '55%',
+    //    center: ['50%', '60%'],
+    //    data:s_data7,
+    //    itemStyle: {
+    //        emphasis: {
+    //            shadowBlur: 10,
+    //            shadowOffsetX: 0,
+    //            shadowColor: 'rgba(0, 0, 0, 0.5)'
+    //            }
+    //        }
+    //    }
+    //    ],
+    // });
+    </script>
+</body>

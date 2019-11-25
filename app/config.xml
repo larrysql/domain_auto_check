@@ -1,0 +1,9 @@
+<uwsgi>
+<pythonpath>/home/oracle/scripts/hreport/app</pythonpath>
+<module>manage</module>
+<callable>app</callable>
+<socket>127.0.0.1:4000</socket>
+<master/>
+<processes>4</processes>
+<memory-report/>
+</uwsgi>

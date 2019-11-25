@@ -1,0 +1,261 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title></title>
+    <!--<meta http-equiv="refresh" content="10">-->
+    <link rel="stylesheet" type="text/css" href="../static/Styles/admin-all.css" />
+    <link rel="stylesheet" type="text/css" href="../static/Styles/base.css"/>
+    <link rel="stylesheet" type="text/css" href="../static/Styles/bootstrap.min.css"/>
+    <link rel="stylesheet" type="text/css" href="../static/Styles/select2.min.css"/>
+    <script type="text/javascript" src="../static/Scripts/jquery-1.7.2.js"></script>
+    <script type="text/javascript" src="../static/Scripts/jquery-ui-1.8.22.custom.min.js"></script>
+    <script type="text/javascript" src="../static/Scripts/select2.min.js"></script>
+    <script type="text/javascript" src="../static/Scripts/zh-CN.js"></script>
+<!--     <script type="text/javascript" src="../static/Scripts/valid_form.js"></script> -->
+    <link rel="stylesheet" type="text/css" href="../static/Styles/ui-lightness/jquery-ui-1.8.22.custom.css" />
+    <link rel="stylesheet" type="text/css" href="../static/Styles/formui.css"/>
+
+    <!--<script type="text/javascript" src="../static/Scripts/tb.js"></script> -->
+    <style type="text/css">
+    table.gridtable {
+        width:90%;
+    	font-family: verdana,arial,sans-serif;
+    	color:#333333;
+    	border-width: 1px;
+    	border-color: #666666;
+    	border-collapse: collapse;
+       /* background-color:#ECECFF;*/
+    }
+    table.gridtable th {
+    	border-width: 0px;
+    	padding: 8px;
+    	border-style: solid;
+    	border-color: #666666;
+    	/*background-color: #ECECFF;*/
+        font-size:12px;
+        text-align:left;
+    }
+    table.gridtable td {
+    	border-width: 0px;
+    	padding: 8px;
+    	border-style: solid;
+    	border-color: #666666;
+    	background-color: #ECECFF;
+        font-size:11px;
+        text-align:left;
+        height:15px;
+    }
+    input{
+                border: 1px solid #ccc;
+                padding: 7px 0px;
+                border-radius: 3px;
+                width:200px;
+                padding-left:5px;
+                -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
+                box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
+                -webkit-transition: border-color ease-in-out .15s,-webkit-box-shadow ease-in-out .15s;
+                -o-transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
+                transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s
+            }
+            input:focus{
+                    border-color: #66afe9;
+                    outline: 0;
+                    -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075),0 0 8px rgba(102,175,233,.6);
+                    box-shadow: inset 0 1px 1px rgba(0,0,0,.075),0 0 8px rgba(102,175,233,.6)
+            }
+    #login_click{ margin-top:32px; height:40px;}  
+    #login_click a   
+    {  
+        text-decoration:none;  
+        background:#2f435e;  
+        color:#f2f2f2;  
+          
+        padding: 8px 30px 8px 30px;  
+        font-size:15px;  
+        font-family: 微软雅黑,宋体,Arial,Helvetica,Verdana,sans-serif;  
+        font-weight:bold;  
+        border-radius:3px;  
+          
+        -webkit-transition:all linear 0.30s;  
+        -moz-transition:all linear 0.30s;  
+        transition:all linear 0.30s;  
+          
+        }  
+       #login_click a:hover { background:#385f9e; }  
+    </style>
+    <script>
+        $(function(){
+        $("#demo").select2({
+        theme: "classic",
+        tags: true,
+        width:"200" ,
+        maximumSelectionLength: 1
+        });
+        });
+        $( function() {
+        $( "#datepicker" ).datepicker();
+        } );
+     </script>
+        <script type="text/javascript">
+        
+        function validate_required(field,alerttxt)
+        {
+        with (field)
+          {
+          if ((value.replace(/(^\s*)|(\s*$)/g, "")==null||value.replace(/(^\s*)|(\s*$)/g, "")=="")&&$('#domain_class option:selected').val()!='公有')
+            {alert(alerttxt);return false}
+          else {return true}
+          }
+        }
+
+        function validate_email(field,alerttxt)
+        {
+        with (field)
+        {
+        apos=value.indexOf("@")
+        dotpos=value.lastIndexOf(".")
+        if (apos<1||dotpos-apos<2) 
+          {alert(alerttxt);return false}
+        else {return true}
+        }
+        }
+        
+        function validate_form(thisform)
+        {
+        with (thisform)
+          {
+          if (validate_required(domain_name,"域名不能为空!")==false)
+            {domain_name.focus();return false}
+          if (validate_required(account_name,"账号不能为空!")==false)
+            {account_name.focus();return false}
+          if (validate_required(email,"邮箱地址不能为空!")==false)
+            {email.focus();return false}
+          if (validate_email(email,"不是合法的邮箱地址!")==false)
+            {email.focus();return false}
+          if (validate_required(phone,"手机号不能为空!")==false)
+            {phone.focus();return false}
+          if (validate_required(expire_date,"到期时间不能为空!")==false)
+            {expire_date.focus();return false}
+          if (validate_required(postal_code,"postal_code不能为空!")==false)
+            {postal_code.focus();return false}
+            if (validate_required(user_name,"用户名不能为空!")==false)
+            {user_name.focus();return false}
+          if (validate_required(status,"状态不能为空!")==false)
+            {status.focus();return false}
+          if (validate_required(is_add_firewall,"是否加入防火墙不能为空!")==false)
+            {is_add_firewall.focus();return false}
+          if (validate_required(url,"url不能为空!")==false)
+            {url.focus();return false}
+          }
+        }
+
+        function doit(o){
+            var ss=document.getElementsByClassName("together");
+            // alert(o.options[o.selectedIndex].value);
+            if(o.options[o.selectedIndex].value=='公有'){
+               for(var i=0;i<ss.length;i++){
+                  if(ss[i]!=o) 
+                    {
+                        ss[i].disabled=true;
+                    }
+               }
+            }else{
+               for(var i=0;i<ss.length;i++){
+                  ss[i].disabled=false;
+               }
+            }
+        }
+        </script>
+</head>
+<body>
+    <!-- <div class="alert alert-info" id="title">当前位置<b class="tip"></b>ORACLE监控<b class="tip"></b>{{tag}}</div> -->
+   <!-- Table goes in the document BODY -->
+   <div class="alert alert-info" id="title" style="float:left;width:100%;">
+   输入域名信息
+    </div>
+    <div style="float:left;width:60%;">
+    <form style="margin:0px;display:inline" action="/add_domain" method="POST" name="dateform" onsubmit="return validate_form(this)">
+        <table class="gridtable">
+        <tbody>
+            <tr hidden="hidden"><td>domain_id</td><td><input type="text" value="" name="domain_id"> </td></tr>
+            <tr><td>域名：</td><td><input type="text" value="" name="domain_name"> </td></tr>
+            <tr>
+                <td>域名归属:</td>
+                <td>
+                    <select name="group_id" style="width:200px;height: 30px;" value="1">
+                        <option value="1">一号站</option>
+                        <option value="5">二号站</option>
+                        <option value="2">穿云梯</option>
+                        <option value="3">一号站移动端</option>
+                        <option value="6">二号站移动端</option>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td>权限ID:</td>
+                <td>
+                    <select name="user_group_id" style="width:200px;height: 30px;" value="1">
+                        <option value="1">运维部</option>
+                        <option value="2">穿云梯</option>
+                        <option value="3">市场部</option>
+                    </select>
+                </td>
+            </tr>
+            <tr><td>账号:</td><td><input type="text" value="" name="account_name"></td></tr>
+            <input type="hidden" value={{user_name}} name="user_name">
+            <input type="hidden" value="2339937613@qq.com"  name="email">
+            <input type="hidden" value="+639175133313"  name="phone">
+            <input type="hidden" id="datepicker" value="12/31/2020" name="expire_date">
+            <input type="hidden" value="1714" name="postal_code">
+            <tr><td>类别:</td><td>
+           <select id="domain_class" name="domain_class" class="together" style="width:200px;height: 30px;" value="私有" onclick="javascript:doit(this);">
+                        <option value="私有">私有</option>
+                        <option value="公有">公有</option>
+                </select>
+                </td>
+            </tr>
+            <tr>
+                <td>状态:</td>
+                <td>
+                    <select name="status" style="width:200px;height: 30px;" value="可用">
+                        <option value="可用">可用</option>
+                        <option value="禁用">禁用</option>
+                    </select>
+                </td>
+            </tr>
+            <input type="hidden" value=""  name="url">
+            <tr><td>是否加入防火墙:</td><td>
+                <select name="is_add_firewall" style="width:200px;height: 30px;" value="是">
+                        <option value="是">是</option>
+                        <option value="否">否</option>
+                </select></td></tr>
+        </tbody>
+        </table>
+        <center>
+            <div id="login_click">  
+                <input value=" 提&nbsp;&nbsp;&nbsp;&nbsp;交 " id="btlogin"  style="width:100px" type="submit">
+            </div> 
+        </center>
+<!--          <center>
+         <div id="login_click">  
+            <a id="btlogin" href="javascript:document.dateform.submit();">提&nbsp;&nbsp;&nbsp;&nbsp;交</a>  
+         </div>  
+         </center> -->
+    </form>
+    </div> 
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+

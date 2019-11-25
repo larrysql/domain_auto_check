@@ -1,0 +1,182 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title></title>
+    <!--<meta http-equiv="refresh" content="10">-->
+    <link rel="stylesheet" type="text/css" href="../static/Styles/admin-all.css" />
+    <link rel="stylesheet" type="text/css" href="../static/Styles/base.css"/>
+    <link rel="stylesheet" type="text/css" href="../static/Styles/bootstrap.min.css"/>
+    <link rel="stylesheet" type="text/css" href="../static/Styles/select2.min.css"/>
+    <script type="text/javascript" src="../static/Scripts/jquery-1.7.2.js"></script>
+    <script type="text/javascript" src="../static/Scripts/select2.min.js"></script>
+    <script type="text/javascript" src="../static/Scripts/zh-CN.js"></script>
+    <script type="text/javascript" src="../static/Scripts/jquery-ui-1.8.22.custom.min.js"></script>
+    <script type="text/javascript" src="../static/Scripts/page.js"></script>
+    <link rel="stylesheet" type="text/css" href="../static/Styles/ui-lightness/jquery-ui-1.8.22.custom.css" />
+    <link rel="stylesheet" type="text/css" href="../static/Styles/formui.css"/>
+
+    <!--<script type="text/javascript" src="../static/Scripts/tb.js"></script> -->
+    <script>
+    window.onload=function(){
+      // var tb=document.getElementById("DataGrid1");
+      // var cbs=tb.getElementsByTagName("input");
+      // for(var i=0;i<cbs.length;i++)
+      // {
+      // if(cbs[i].type=="checkbox")
+      // {
+      // cbs[i].checked=true;
+      // }
+      // }
+      signal = "{{signal}}";
+      if(signal=='update_domain')
+      {
+        alert("修改成功!");
+      };
+      if(signal=='delete_domain')
+      {
+        alert("删除成功!");
+      };
+      if(signal=='add_domain')
+      {
+        alert("增加成功!");
+      };
+      if(signal=='disable_domain')
+      {
+        alert("禁用成功!");
+      };
+      if(signal=='enable_domain')
+      {
+        alert("启用成功!");
+      };
+    }
+    </script>
+    <script>
+        $(function(){
+        $("#demo").select2({
+        theme: "classic",
+        tags: true,
+        width:"150" ,
+        maximumSelectionLength: 1
+        });
+        });
+    </script>
+    <style type="text/css">
+    table.gridtable {
+        width:100%;
+    	font-family: verdana,arial,sans-serif;
+    	color:#333333;
+    	border-width: 1px;
+    	border-color: #666666;
+    	border-collapse: collapse;
+    }
+    table.gridtable th {
+    	border-width: 1px;
+    	padding: 8px;
+    	border-style: solid;
+    	border-color: #666666;
+    	background-color: #99BBFF;
+        font-size:10px;
+        text-align:center;
+    }
+    table.gridtable td {
+    	border-width: 1px;
+    	padding: 8px;
+    	border-style: solid;
+    	border-color: #666666;
+    	background-color: #ffffff;
+        font-size:10px;
+        text-align:center;
+    }
+    </style>
+
+</head>
+<body>
+    <!-- <div class="alert alert-info" id="title">当前位置<b class="tip"></b>ORACLE监控<b class="tip"></b>{{tag}}</div> -->
+   <!-- Table goes in the document BODY -->
+   <div class="alert alert-info" id="title" style="float:left;width:100%;">
+        <div style="float:left;height: 20px">
+         <form style="margin:0px;display:inline" action="/domain_query" method="POST" id="dateform">
+               域名&nbsp;&nbsp;<input name="domain_name" style="background-color:#FFF;color:#555;width:80px;height: 15px;" value="" type="text">
+               用户名&nbsp;&nbsp;<input name="user_name" style="background-color:#FFF;color:#555;width:80px;height: 15px;" value="" type="text">
+               状态&nbsp;&nbsp;<select style="background-color:#FFF;color:#555;width:100px;height: 25px;font-size:10px;" name="status" value="">
+                   <option value="1">禁用</option>
+                   <option value="0">可用</option>
+               </select>
+               类别&nbsp;&nbsp;<select style="background-color:#FFF;color:#555;width:100px;height: 25px;font-size:10px;" name="domain_class" value="">
+                   <option value="公有">公有</option>
+                   <option value="私有">私有</option>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="submit" value="查  询"/>
+            </form>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            {% if domain_admin_flag == 'Y'  %}
+            <a href="/add_domain"><input type="submit" style="display:inline" value="增加新域名"/></a>
+            {% endif %}
+        </div>
+
+    </div>
+    <div  style="clear:both;"">
+    <table class="gridtable" id="domain_table">
+    <tr>
+    	<th>序号</th><th>域名</th><th>账号</th><th>电子邮件</th><th>手机号</th><th>POSTAL_CODE</th><th>失效日期</th><th>用户名</th><th>状态</th><th>url</th><th>是否加入防火墙</th><th>类别</th>
+        {% if domain_admin_flag == 'Y'  %}
+            <th width=10%>操作</th>
+        {% endif %}
+    </tr>
+    {% for row in rs %}
+        <tr>
+            <td>{{row[0]}}</td>
+            <td>{{row[1]}}</td>
+            <td>{{row[2]}}</td>
+            <td>{{row[3]}}</td>
+            <td>{{row[4]}}</td>
+            <td>{{row[5]}}</td>
+            <td>{{row[6]}}</td>
+            <td>{{row[7]}}</td>
+            <td>{{row[8]}}</td>
+            <td>{{row[9]}}</td>
+            <td>{{row[10]}}</td>
+            <td>{{row[11]}}</td>
+            {% if domain_admin_flag == 'Y' %}
+                <td>
+                <a href="/update_domain?domain_id={{row[0]}}">编辑</a>|
+                {% if row[8] == '可用' %}
+                <a href="/disable_domain?domain_id={{row[0]}}&status=0" onclick="return confirm('确认禁用吗？');"><fcolor      ="#FF3300">禁用</font></a>
+                {% else %}
+                <a href="/disable_domain?domain_id={{row[0]}}&status=1" onclick="return confirm('确认启用吗？');"><fcolor      ="#FF3300">启用</font></a>
+                {% endif %}
+                |<a href="/delete_domain?domain_id={{row[0]}}" onclick="return confirm('确认删除吗？');">删除</td>
+            {% endif %}
+        </tr>
+    {% endfor %}
+    </table>
+</div>
+<center>
+<br>
+<a id="btn0"></a>
+<input id="pageSize" type="text" type="text" style="width:30px;" maxlength="2" value="getDefaultValue()"/><a> 条 </a> <a href="#" id="pageSizeSet">设置</a> 
+<a id="sjzl"></a> 
+<a  href="#" id="btn1">首页</a>
+<a  href="#" id="btn2">上一页</a>
+<a  href="#" id="btn3">下一页</a>
+<a  href="#" id="btn4">尾页</a> 
+<a>转到 </a>
+<input id="changePage" type="text" style="width:30px;" maxlength="2/>
+<a>页 </a>
+<a  href="#" id="btn5">跳转</a>
+</center>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+

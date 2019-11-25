@@ -1,0 +1,58 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>报表管理系统</title>
+    <link rel="stylesheet" type="text/css" href="static/Styles/admin-all.css" />
+    <link rel="stylesheet" type="text/css" href="static/Styles/base.css" />
+    <link rel="stylesheet" type="text/css" href="static/Styles/bootstrap.min.css" />
+    <link rel="stylesheet" type="text/css" href="static/Styles/ui-lightness/jquery-ui-1.8.22.custom.css" />
+    <script type="text/javascript" src="static/Scripts/jquery-1.7.2.js"></script>
+    <script type="text/javascript" src="static/Scripts/jquery-ui-1.8.22.custom.min.js"></script>
+    <script type="text/javascript" src="static/Scripts/index.js"></script>
+</head>
+<body>
+    <div class="warp">
+        <!--头部开始-->
+        <div class="top_c">
+            <div class="top-menu">
+                <ul class="top-menu-nav">
+            </div>
+            <div class="top-nav">上午好，欢迎您，{{username}}&nbsp;&nbsp;<a href="#">修改密码</a> | <a href="/logout">安全退出</a></div>
+        </div>
+        <!--头部结束-->
+        <!--左边菜单开始-->
+        <div class="left_c left">
+            <h1>操作菜单</h1>
+            <div class="acc">
+                {% for x in l_privs %}
+                    <div>
+                        <a class="one">{{x[0]}}</a>
+                        <ul class="kid">
+                            {% for y in x[1] %}
+                                <li><b class="tip"></b><a target="Conframe" href="/{{y[1]}}">{{y[0]}}</a></li>
+                            {% endfor %}
+                         </ul>
+                    </div>
+                {% endfor %}
+
+            </div>
+
+        </div>
+        <!--左边菜单结束-->
+        <!--右边框架开始-->
+        <div class="right_c">
+            <div class="nav-tip" onclick="javascript:void(0)">&nbsp;</div>
+
+        </div>
+        <div class="Conframe">
+            <iframe name="Conframe" width="160%" id="Conframe"></iframe>
+        </div>
+        <!--右边框架结束-->
+
+        <!--底部开始-->
+        <div class="bottom_c">Copyright &copy;2016 北京庄道科技有限公司 版权所有</div>
+        <!--底部结束-->
+    </div>
+</body>
+</html>

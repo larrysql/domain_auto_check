@@ -1,0 +1,294 @@
+[uWSGI] getting INI configuration from app.ini
+*** Starting uWSGI 2.0.15 (64bit) on [Tue Oct 17 13:56:18 2017] ***
+compiled with version: 4.8.5 20150623 (Red Hat 4.8.5-16) on 17 October 2017 11:12:43
+os: Linux-3.10.0-327.el7.x86_64 #1 SMP Thu Nov 19 22:10:57 UTC 2015
+nodename: bidb01
+machine: x86_64
+clock source: unix
+pcre jit disabled
+detected number of CPU cores: 32
+current working directory: /home/oracle/scripts/hreport/app
+detected binary path: /usr/local/bin/uwsgi
+uWSGI running as root, you can use --uid/--gid/--chroot options
+*** WARNING: you are running uWSGI as root !!! (use the --uid flag) *** 
+your processes number limit is 771447
+your memory page size is 4096 bytes
+detected max file descriptor number: 1024
+lock engine: pthread robust mutexes
+thunder lock: disabled (you can enable it with --thunder-lock)
+uwsgi socket 0 bound to UNIX address app.sock fd 3
+Python version: 2.7.14 (default, Oct  2 2017, 11:39:12)  [GCC 4.8.5 20150623 (Red Hat 4.8.5-16)]
+*** Python threads support is disabled. You can enable it with --enable-threads ***
+Python main interpreter initialized at 0xf57b20
+your server socket listen backlog is limited to 100 connections
+your mercy for graceful operations on workers is 60 seconds
+mapped 436608 bytes (426 KB) for 5 cores
+*** Operational MODE: preforking ***
+WSGI app 0 (mountpoint='') ready in 0 seconds on interpreter 0xf57b20 pid: 30706 (default app)
+*** uWSGI is running in multiple interpreter mode ***
+spawned uWSGI master process (pid: 30706)
+spawned uWSGI worker 1 (pid: 30708, cores: 1)
+spawned uWSGI worker 2 (pid: 30709, cores: 1)
+spawned uWSGI worker 3 (pid: 30710, cores: 1)
+spawned uWSGI worker 4 (pid: 30711, cores: 1)
+spawned uWSGI worker 5 (pid: 30712, cores: 1)
+Tue Oct 17 14:04:09 2017 - uWSGI worker 2 screams: UAAAAAAH my master disconnected: i will kill myself !!!
+Tue Oct 17 14:04:09 2017 - uWSGI worker 1 screams: UAAAAAAH my master disconnected: i will kill myself !!!
+Tue Oct 17 14:04:09 2017 - uWSGI worker 4 screams: UAAAAAAH my master disconnected: i will kill myself !!!
+Tue Oct 17 14:04:09 2017 - uWSGI worker 3 screams: UAAAAAAH my master disconnected: i will kill myself !!!
+Tue Oct 17 14:04:09 2017 - uWSGI worker 5 screams: UAAAAAAH my master disconnected: i will kill myself !!!
+[uWSGI] getting INI configuration from app.ini
+*** Starting uWSGI 2.0.15 (64bit) on [Fri Feb  2 09:23:29 2018] ***
+compiled with version: 4.8.5 20150623 (Red Hat 4.8.5-16) on 17 October 2017 11:12:43
+os: Linux-3.10.0-327.el7.x86_64 #1 SMP Thu Nov 19 22:10:57 UTC 2015
+nodename: bidb01
+machine: x86_64
+clock source: unix
+pcre jit disabled
+detected number of CPU cores: 32
+current working directory: /home/oracle/scripts/hreport/app
+detected binary path: /usr/local/bin/uwsgi
+uWSGI running as root, you can use --uid/--gid/--chroot options
+*** WARNING: you are running uWSGI as root !!! (use the --uid flag) *** 
+your processes number limit is 771447
+your memory page size is 4096 bytes
+detected max file descriptor number: 1024
+lock engine: pthread robust mutexes
+thunder lock: disabled (you can enable it with --thunder-lock)
+uwsgi socket 0 bound to UNIX address app.sock fd 3
+Python version: 2.7.14 (default, Oct  2 2017, 11:39:12)  [GCC 4.8.5 20150623 (Red Hat 4.8.5-16)]
+*** Python threads support is disabled. You can enable it with --enable-threads ***
+Python main interpreter initialized at 0xf29b40
+your server socket listen backlog is limited to 100 connections
+your mercy for graceful operations on workers is 60 seconds
+mapped 436608 bytes (426 KB) for 5 cores
+*** Operational MODE: preforking ***
+WSGI app 0 (mountpoint='') ready in 0 seconds on interpreter 0xf29b40 pid: 17135 (default app)
+*** uWSGI is running in multiple interpreter mode ***
+spawned uWSGI master process (pid: 17135)
+spawned uWSGI worker 1 (pid: 17137, cores: 1)
+spawned uWSGI worker 2 (pid: 17138, cores: 1)
+spawned uWSGI worker 3 (pid: 17139, cores: 1)
+spawned uWSGI worker 4 (pid: 17140, cores: 1)
+spawned uWSGI worker 5 (pid: 17141, cores: 1)
+[pid: 17141|app: 0|req: 1/1] 10.20.1.253 () {40 vars in 842 bytes} [Fri Feb  2 09:23:37 2018] GET /login => generated 2271 bytes in 22 msecs (HTTP/1.1 200) 2 headers in 81 bytes (1 switches on core 0)
+Traceback (most recent call last):
+  File "/usr/local/lib/python2.7/site-packages/flask/app.py", line 1997, in __call__
+    return self.wsgi_app(environ, start_response)
+  File "/usr/local/lib/python2.7/site-packages/flask/app.py", line 1985, in wsgi_app
+    response = self.handle_exception(e)
+  File "/usr/local/lib/python2.7/site-packages/flask/app.py", line 1540, in handle_exception
+    reraise(exc_type, exc_value, tb)
+  File "/usr/local/lib/python2.7/site-packages/flask/app.py", line 1982, in wsgi_app
+    response = self.full_dispatch_request()
+  File "/usr/local/lib/python2.7/site-packages/flask/app.py", line 1614, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "/usr/local/lib/python2.7/site-packages/flask/app.py", line 1517, in handle_user_exception
+    reraise(exc_type, exc_value, tb)
+  File "/usr/local/lib/python2.7/site-packages/flask/app.py", line 1612, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "/usr/local/lib/python2.7/site-packages/flask/app.py", line 1598, in dispatch_request
+    return self.view_functions[rule.endpoint](**req.view_args)
+  File "./views/user.py", line 64, in login
+    db = conn_db()
+  File "./utils/conn_mysql.py", line 42, in conn_db
+    db = cx_Oracle.connect(username,password,dsn)
+cx_Oracle.DatabaseError: DPI-1047: 64-bit Oracle Client library cannot be loaded: "libclntsh.so: cannot open shared object file: No such file or directory". See https://oracle.github.io/odpi/doc/installation.html#linux for help
+[pid: 17141|app: 0|req: 2/2] 10.20.1.253 () {46 vars in 997 bytes} [Fri Feb  2 09:23:46 2018] POST /login => generated 0 bytes in 15 msecs (HTTP/1.1 500) 0 headers in 0 bytes (0 switches on core 0)
+SIGINT/SIGQUIT received...killing workers...
+worker 1 buried after 1 seconds
+worker 2 buried after 1 seconds
+worker 3 buried after 1 seconds
+worker 4 buried after 1 seconds
+worker 5 buried after 1 seconds
+goodbye to uWSGI.
+VACUUM: unix socket app.sock removed.
+[uWSGI] getting INI configuration from app.ini
+*** Starting uWSGI 2.0.15 (64bit) on [Sat Mar  3 11:04:13 2018] ***
+compiled with version: 4.8.5 20150623 (Red Hat 4.8.5-16) on 17 October 2017 11:12:43
+os: Linux-3.10.0-327.el7.x86_64 #1 SMP Thu Nov 19 22:10:57 UTC 2015
+nodename: bidb01
+machine: x86_64
+clock source: unix
+pcre jit disabled
+detected number of CPU cores: 32
+current working directory: /home/oracle/scripts/hreport/app
+detected binary path: /usr/local/bin/uwsgi
+uWSGI running as root, you can use --uid/--gid/--chroot options
+*** WARNING: you are running uWSGI as root !!! (use the --uid flag) *** 
+your processes number limit is 771447
+your memory page size is 4096 bytes
+detected max file descriptor number: 1024
+lock engine: pthread robust mutexes
+thunder lock: disabled (you can enable it with --thunder-lock)
+uwsgi socket 0 bound to UNIX address app.sock fd 3
+Python version: 2.7.14 (default, Oct  2 2017, 11:39:12)  [GCC 4.8.5 20150623 (Red Hat 4.8.5-16)]
+*** Python threads support is disabled. You can enable it with --enable-threads ***
+Python main interpreter initialized at 0x1f06b40
+your server socket listen backlog is limited to 100 connections
+your mercy for graceful operations on workers is 60 seconds
+mapped 436608 bytes (426 KB) for 5 cores
+*** Operational MODE: preforking ***
+WSGI app 0 (mountpoint='') ready in 1 seconds on interpreter 0x1f06b40 pid: 32386 (default app)
+*** uWSGI is running in multiple interpreter mode ***
+spawned uWSGI master process (pid: 32386)
+spawned uWSGI worker 1 (pid: 32388, cores: 1)
+spawned uWSGI worker 2 (pid: 32389, cores: 1)
+spawned uWSGI worker 3 (pid: 32390, cores: 1)
+spawned uWSGI worker 4 (pid: 32391, cores: 1)
+spawned uWSGI worker 5 (pid: 32392, cores: 1)
+[pid: 32391|app: 0|req: 1/1] 10.20.1.253 () {42 vars in 865 bytes} [Sat Mar  3 11:04:21 2018] GET /withdraw_stat => generated 233 bytes in 42 msecs (HTTP/1.1 404) 2 headers in 72 bytes (1 switches on core 0)
+[pid: 32392|app: 0|req: 1/2] 10.20.1.253 () {42 vars in 859 bytes} [Sat Mar  3 11:04:23 2018] GET /top10_user => generated 9123 bytes in 39 msecs (HTTP/1.1 200) 2 headers in 81 bytes (1 switches on core 0)
+[pid: 32391|app: 0|req: 2/3] 10.20.1.253 () {40 vars in 806 bytes} [Sat Mar  3 11:04:23 2018] GET /static/Scripts/echarts.common.min.js => generated 386938 bytes in 22 msecs via sendfile() (HTTP/1.1 200) 8 headers in 305 bytes (0 switches on core 0)
+Traceback (most recent call last):
+  File "/usr/local/lib/python2.7/site-packages/flask/app.py", line 1997, in __call__
+    return self.wsgi_app(environ, start_response)
+  File "/usr/local/lib/python2.7/site-packages/flask/app.py", line 1985, in wsgi_app
+    response = self.handle_exception(e)
+  File "/usr/local/lib/python2.7/site-packages/flask/app.py", line 1540, in handle_exception
+    reraise(exc_type, exc_value, tb)
+  File "/usr/local/lib/python2.7/site-packages/flask/app.py", line 1982, in wsgi_app
+    response = self.full_dispatch_request()
+  File "/usr/local/lib/python2.7/site-packages/flask/app.py", line 1614, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "/usr/local/lib/python2.7/site-packages/flask/app.py", line 1517, in handle_user_exception
+    reraise(exc_type, exc_value, tb)
+  File "/usr/local/lib/python2.7/site-packages/flask/app.py", line 1612, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "/usr/local/lib/python2.7/site-packages/flask/app.py", line 1598, in dispatch_request
+    return self.view_functions[rule.endpoint](**req.view_args)
+  File "./views/user_stats.py", line 36, in top10_user_json
+    db = conn_db()
+  File "./utils/conn_mysql.py", line 42, in conn_db
+    db = cx_Oracle.connect(username,password,dsn)
+cx_Oracle.DatabaseError: DPI-1047: 64-bit Oracle Client library cannot be loaded: "libclntsh.so: cannot open shared object file: No such file or directory". See https://oracle.github.io/odpi/doc/installation.html#linux for help
+[pid: 32392|app: 0|req: 2/4] 10.20.1.253 () {42 vars in 886 bytes} [Sat Mar  3 11:04:24 2018] GET /top10_user_json?stat_name=%27top10_bet%27&type=%27data%27 => generated 0 bytes in 23 msecs (HTTP/1.1 500) 0 headers in 0 bytes (0 switches on core 0)
+Traceback (most recent call last):
+  File "/usr/local/lib/python2.7/site-packages/flask/app.py", line 1997, in __call__
+    return self.wsgi_app(environ, start_response)
+  File "/usr/local/lib/python2.7/site-packages/flask/app.py", line 1985, in wsgi_app
+    response = self.handle_exception(e)
+  File "/usr/local/lib/python2.7/site-packages/flask/app.py", line 1540, in handle_exception
+    reraise(exc_type, exc_value, tb)
+  File "/usr/local/lib/python2.7/site-packages/flask/app.py", line 1982, in wsgi_app
+    response = self.full_dispatch_request()
+  File "/usr/local/lib/python2.7/site-packages/flask/app.py", line 1614, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "/usr/local/lib/python2.7/site-packages/flask/app.py", line 1517, in handle_user_exception
+    reraise(exc_type, exc_value, tb)
+  File "/usr/local/lib/python2.7/site-packages/flask/app.py", line 1612, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "/usr/local/lib/python2.7/site-packages/flask/app.py", line 1598, in dispatch_request
+    return self.view_functions[rule.endpoint](**req.view_args)
+  File "./views/user_stats.py", line 36, in top10_user_json
+    db = conn_db()
+  File "./utils/conn_mysql.py", line 42, in conn_db
+    db = cx_Oracle.connect(username,password,dsn)
+cx_Oracle.DatabaseError: DPI-1047: 64-bit Oracle Client library cannot be loaded: "libclntsh.so: cannot open shared object file: No such file or directory". See https://oracle.github.io/odpi/doc/installation.html#linux for help
+[pid: 32391|app: 0|req: 3/5] 10.20.1.253 () {42 vars in 904 bytes} [Sat Mar  3 11:04:24 2018] GET /top10_user_json?stat_name=%27top10_sale_lottery%27&type=%27data%27 => generated 0 bytes in 6 msecs (HTTP/1.1 500) 0 headers in 0 bytes (0 switches on core 0)
+Traceback (most recent call last):
+  File "/usr/local/lib/python2.7/site-packages/flask/app.py", line 1997, in __call__
+    return self.wsgi_app(environ, start_response)
+  File "/usr/local/lib/python2.7/site-packages/flask/app.py", line 1985, in wsgi_app
+    response = self.handle_exception(e)
+  File "/usr/local/lib/python2.7/site-packages/flask/app.py", line 1540, in handle_exception
+    reraise(exc_type, exc_value, tb)
+  File "/usr/local/lib/python2.7/site-packages/flask/app.py", line 1982, in wsgi_app
+    response = self.full_dispatch_request()
+  File "/usr/local/lib/python2.7/site-packages/flask/app.py", line 1614, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "/usr/local/lib/python2.7/site-packages/flask/app.py", line 1517, in handle_user_exception
+    reraise(exc_type, exc_value, tb)
+  File "/usr/local/lib/python2.7/site-packages/flask/app.py", line 1612, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "/usr/local/lib/python2.7/site-packages/flask/app.py", line 1598, in dispatch_request
+    return self.view_functions[rule.endpoint](**req.view_args)
+  File "./views/user_stats.py", line 36, in top10_user_json
+    db = conn_db()
+  File "./utils/conn_mysql.py", line 42, in conn_db
+    db = cx_Oracle.connect(username,password,dsn)
+cx_Oracle.DatabaseError: DPI-1047: 64-bit Oracle Client library cannot be loaded: "libclntsh.so: cannot open shared object file: No such file or directory". See https://oracle.github.io/odpi/doc/installation.html#linux for help
+[pid: 32391|app: 0|req: 4/6] 10.20.1.253 () {42 vars in 896 bytes} [Sat Mar  3 11:04:24 2018] GET /top10_user_json?stat_name=%27top10_recharge%27&type=%27data%27 => generated 0 bytes in 6 msecs (HTTP/1.1 500) 0 headers in 0 bytes (0 switches on core 0)
+Traceback (most recent call last):
+  File "/usr/local/lib/python2.7/site-packages/flask/app.py", line 1997, in __call__
+    return self.wsgi_app(environ, start_response)
+  File "/usr/local/lib/python2.7/site-packages/flask/app.py", line 1985, in wsgi_app
+    response = self.handle_exception(e)
+  File "/usr/local/lib/python2.7/site-packages/flask/app.py", line 1540, in handle_exception
+    reraise(exc_type, exc_value, tb)
+  File "/usr/local/lib/python2.7/site-packages/flask/app.py", line 1982, in wsgi_app
+    response = self.full_dispatch_request()
+  File "/usr/local/lib/python2.7/site-packages/flask/app.py", line 1614, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "/usr/local/lib/python2.7/site-packages/flask/app.py", line 1517, in handle_user_exception
+    reraise(exc_type, exc_value, tb)
+  File "/usr/local/lib/python2.7/site-packages/flask/app.py", line 1612, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "/usr/local/lib/python2.7/site-packages/flask/app.py", line 1598, in dispatch_request
+    return self.view_functions[rule.endpoint](**req.view_args)
+  File "./views/user_stats.py", line 36, in top10_user_json
+    db = conn_db()
+  File "./utils/conn_mysql.py", line 42, in conn_db
+    db = cx_Oracle.connect(username,password,dsn)
+cx_Oracle.DatabaseError: DPI-1047: 64-bit Oracle Client library cannot be loaded: "libclntsh.so: cannot open shared object file: No such file or directory". See https://oracle.github.io/odpi/doc/installation.html#linux for help
+[pid: 32391|app: 0|req: 5/7] 10.20.1.253 () {42 vars in 896 bytes} [Sat Mar  3 11:04:24 2018] GET /top10_user_json?stat_name=%27top10_user_cnt%27&type=%27data%27 => generated 0 bytes in 6 msecs (HTTP/1.1 500) 0 headers in 0 bytes (0 switches on core 0)
+Traceback (most recent call last):
+  File "/usr/local/lib/python2.7/site-packages/flask/app.py", line 1997, in __call__
+    return self.wsgi_app(environ, start_response)
+  File "/usr/local/lib/python2.7/site-packages/flask/app.py", line 1985, in wsgi_app
+    response = self.handle_exception(e)
+  File "/usr/local/lib/python2.7/site-packages/flask/app.py", line 1540, in handle_exception
+    reraise(exc_type, exc_value, tb)
+  File "/usr/local/lib/python2.7/site-packages/flask/app.py", line 1982, in wsgi_app
+    response = self.full_dispatch_request()
+  File "/usr/local/lib/python2.7/site-packages/flask/app.py", line 1614, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "/usr/local/lib/python2.7/site-packages/flask/app.py", line 1517, in handle_user_exception
+    reraise(exc_type, exc_value, tb)
+  File "/usr/local/lib/python2.7/site-packages/flask/app.py", line 1612, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "/usr/local/lib/python2.7/site-packages/flask/app.py", line 1598, in dispatch_request
+    return self.view_functions[rule.endpoint](**req.view_args)
+  File "./views/user_stats.py", line 36, in top10_user_json
+    db = conn_db()
+  File "./utils/conn_mysql.py", line 42, in conn_db
+    db = cx_Oracle.connect(username,password,dsn)
+cx_Oracle.DatabaseError: DPI-1047: 64-bit Oracle Client library cannot be loaded: "libclntsh.so: cannot open shared object file: No such file or directory". See https://oracle.github.io/odpi/doc/installation.html#linux for help
+[pid: 32391|app: 0|req: 6/8] 10.20.1.253 () {42 vars in 898 bytes} [Sat Mar  3 11:04:24 2018] GET /top10_user_json?stat_name=%27top10_bind_card%27&type=%27data%27 => generated 0 bytes in 6 msecs (HTTP/1.1 500) 0 headers in 0 bytes (0 switches on core 0)
+[pid: 32391|app: 0|req: 7/9] 10.20.1.253 () {42 vars in 863 bytes} [Sat Mar  3 11:04:33 2018] GET /domain_query => generated 2271 bytes in 19 msecs (HTTP/1.1 200) 2 headers in 81 bytes (1 switches on core 0)
+[pid: 32389|app: 0|req: 1/10] 10.20.1.253 () {44 vars in 919 bytes} [Sat Mar  3 11:04:33 2018] GET /static/Scripts/jquery.spritely-0.6.js => generated 0 bytes in 13 msecs (HTTP/1.1 304) 5 headers in 206 bytes (0 switches on core 0)
+[pid: 32391|app: 0|req: 8/11] 10.20.1.253 () {44 vars in 905 bytes} [Sat Mar  3 11:04:33 2018] GET /static/Styles/login.css => generated 0 bytes in 2 msecs (HTTP/1.1 304) 5 headers in 205 bytes (0 switches on core 0)
+[pid: 32391|app: 0|req: 9/12] 10.20.1.253 () {44 vars in 896 bytes} [Sat Mar  3 11:04:33 2018] GET /static/img/cloud.jpg => generated 0 bytes in 2 msecs (HTTP/1.1 304) 5 headers in 206 bytes (0 switches on core 0)
+[pid: 32389|app: 0|req: 2/13] 10.20.1.253 () {44 vars in 973 bytes} [Sat Mar  3 11:04:33 2018] GET /static/Styles/font/Vani.ttf => generated 0 bytes in 2 msecs (HTTP/1.1 304) 5 headers in 206 bytes (0 switches on core 0)
+[pid: 32389|app: 0|req: 3/14] 10.20.1.253 () {42 vars in 851 bytes} [Sat Mar  3 11:04:35 2018] GET /logout => generated 2271 bytes in 15 msecs (HTTP/1.1 200) 3 headers in 208 bytes (1 switches on core 0)
+Traceback (most recent call last):
+  File "/usr/local/lib/python2.7/site-packages/flask/app.py", line 1997, in __call__
+    return self.wsgi_app(environ, start_response)
+  File "/usr/local/lib/python2.7/site-packages/flask/app.py", line 1985, in wsgi_app
+    response = self.handle_exception(e)
+  File "/usr/local/lib/python2.7/site-packages/flask/app.py", line 1540, in handle_exception
+    reraise(exc_type, exc_value, tb)
+  File "/usr/local/lib/python2.7/site-packages/flask/app.py", line 1982, in wsgi_app
+    response = self.full_dispatch_request()
+  File "/usr/local/lib/python2.7/site-packages/flask/app.py", line 1614, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "/usr/local/lib/python2.7/site-packages/flask/app.py", line 1517, in handle_user_exception
+    reraise(exc_type, exc_value, tb)
+  File "/usr/local/lib/python2.7/site-packages/flask/app.py", line 1612, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "/usr/local/lib/python2.7/site-packages/flask/app.py", line 1598, in dispatch_request
+    return self.view_functions[rule.endpoint](**req.view_args)
+  File "./views/user.py", line 64, in login
+    db = conn_db()
+  File "./utils/conn_mysql.py", line 42, in conn_db
+    db = cx_Oracle.connect(username,password,dsn)
+cx_Oracle.DatabaseError: DPI-1047: 64-bit Oracle Client library cannot be loaded: "libclntsh.so: cannot open shared object file: No such file or directory". See https://oracle.github.io/odpi/doc/installation.html#linux for help
+[pid: 32391|app: 0|req: 10/15] 10.20.1.253 () {46 vars in 924 bytes} [Sat Mar  3 11:04:42 2018] POST /login => generated 0 bytes in 8 msecs (HTTP/1.1 500) 0 headers in 0 bytes (0 switches on core 0)
+SIGINT/SIGQUIT received...killing workers...
+worker 1 buried after 1 seconds
+worker 2 buried after 1 seconds
+worker 3 buried after 1 seconds
+worker 4 buried after 1 seconds
+worker 5 buried after 1 seconds
+goodbye to uWSGI.
+VACUUM: unix socket app.sock removed.

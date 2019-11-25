@@ -1,0 +1,256 @@
+
+SQL*Plus: Release 11.2.0.4.0 Production on Wed Oct 25 17:39:38 2017
+
+Copyright (c) 1982, 2013, Oracle.  All rights reserved.
+
+
+Connected to:
+Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, OLAP, Data Mining and Real Application Testing options
+
+SQL> SQL> SQL> SQL> SQL> 
+SQL*Plus: Release 11.2.0.4.0 Production on Wed Oct 25 17:39:43 2017
+
+Copyright (c) 1982, 2013, Oracle.  All rights reserved.
+
+
+Connected to:
+Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, OLAP, Data Mining and Real Application Testing options
+
+SQL> SQL> SQL> SQL> SQL> 
+SQL*Plus: Release 11.2.0.4.0 Production on Wed Oct 25 17:39:47 2017
+
+Copyright (c) 1982, 2013, Oracle.  All rights reserved.
+
+
+Connected to:
+Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, OLAP, Data Mining and Real Application Testing options
+
+SQL> SQL> SQL> SQL> SQL> 
+SQL*Plus: Release 11.2.0.4.0 Production on Wed Oct 25 17:39:51 2017
+
+Copyright (c) 1982, 2013, Oracle.  All rights reserved.
+
+
+Connected to:
+Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, OLAP, Data Mining and Real Application Testing options
+
+SQL> SQL> SQL> SQL> SQL> 
+SQL*Plus: Release 11.2.0.4.0 Production on Wed Oct 25 17:39:54 2017
+
+Copyright (c) 1982, 2013, Oracle.  All rights reserved.
+
+
+Connected to:
+Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, OLAP, Data Mining and Real Application Testing options
+
+SQL> SQL> SQL> SQL> SQL> 
+PL/SQL procedure successfully completed.
+
+Elapsed: 00:05:11.87
+SQL> Disconnected from Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, OLAP, Data Mining and Real Application Testing options
+
+PL/SQL procedure successfully completed.
+
+Elapsed: 00:05:08.69
+SQL> Disconnected from Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, OLAP, Data Mining and Real Application Testing options
+BEGIN p_agent_bet_recharge('20170701','20170715'); END;
+
+*
+ERROR at line 1:
+ORA-00942: table or view does not exist
+ORA-06512: at "HGAME.P_AGENT_BET_RECHARGE", line 20
+ORA-06512: at line 1
+
+
+Elapsed: 00:15:24.08
+SQL> Disconnected from Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, OLAP, Data Mining and Real Application Testing options
+BEGIN p_agent_bet_recharge('20170716','20170731'); END;
+
+*
+ERROR at line 1:
+ORA-00942: table or view does not exist
+ORA-06512: at "HGAME.P_AGENT_BET_RECHARGE", line 20
+ORA-06512: at line 1
+
+
+Elapsed: 00:25:19.53
+SQL> Disconnected from Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, OLAP, Data Mining and Real Application Testing options
+
+SQL*Plus: Release 11.2.0.4.0 Production on Wed Oct 25 18:06:27 2017
+
+Copyright (c) 1982, 2013, Oracle.  All rights reserved.
+
+
+Connected to:
+Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, OLAP, Data Mining and Real Application Testing options
+
+SQL> SQL> SQL> SQL> SQL> 
+SQL*Plus: Release 11.2.0.4.0 Production on Wed Oct 25 18:07:03 2017
+
+Copyright (c) 1982, 2013, Oracle.  All rights reserved.
+
+
+Connected to:
+Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, OLAP, Data Mining and Real Application Testing options
+
+SQL> SQL> SQL> SQL> SQL> 
+SQL*Plus: Release 11.2.0.4.0 Production on Wed Oct 25 18:07:29 2017
+
+Copyright (c) 1982, 2013, Oracle.  All rights reserved.
+
+
+Connected to:
+Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, OLAP, Data Mining and Real Application Testing options
+
+SQL> SQL> SQL> SQL> SQL> 
+SQL*Plus: Release 11.2.0.4.0 Production on Wed Oct 25 18:07:50 2017
+
+Copyright (c) 1982, 2013, Oracle.  All rights reserved.
+
+
+Connected to:
+Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, OLAP, Data Mining and Real Application Testing options
+
+SQL> SQL> SQL> SQL> SQL> 
+SQL*Plus: Release 11.2.0.4.0 Production on Wed Oct 25 18:08:21 2017
+
+Copyright (c) 1982, 2013, Oracle.  All rights reserved.
+
+
+Connected to:
+Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, OLAP, Data Mining and Real Application Testing options
+
+SQL> SQL> SQL> SQL> SQL> BEGIN p_agent_bet_recharge('20170803','20170815'); END;
+
+BEGIN p_agent_bet_recharge('20170718','20170731'); END;
+
+*
+*
+ERROR at line 1:
+ERROR at line 1:
+ORA-04021: timeout occurred while waiting to lock object
+ORA-04021: timeout occurred while waiting to lock object
+
+
+
+
+Elapsed: 00:29:23.95
+Elapsed: 00:28:57.85
+SQL> SQL> Disconnected from Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, OLAP, Data Mining and Real Application Testing options
+Disconnected from Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, OLAP, Data Mining and Real Application Testing options
+BEGIN p_agent_bet_recharge('20170817','20170831'); END;
+
+BEGIN p_agent_bet_recharge('20170926','20171012'); END;
+
+*
+*
+ERROR at line 1:
+ERROR at line 1:
+ORA-04021: timeout occurred while waiting to lock object
+ORA-04021: timeout occurred while waiting to lock object
+
+
+
+
+Elapsed: 00:28:06.21
+Elapsed: 00:28:37.09
+SQL> SQL> Disconnected from Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, OLAP, Data Mining and Real Application Testing options
+Disconnected from Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, OLAP, Data Mining and Real Application Testing options
+BEGIN p_agent_bet_recharge('20170702','20170715'); END;
+
+*
+ERROR at line 1:
+ORA-04021: timeout occurred while waiting to lock object
+
+
+Elapsed: 01:30:03.01
+SQL> Disconnected from Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, OLAP, Data Mining and Real Application Testing options
+
+PL/SQL procedure successfully completed.
+
+Elapsed: 03:07:12.74
+SQL> Disconnected from Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, OLAP, Data Mining and Real Application Testing options
+
+SQL*Plus: Release 11.2.0.4.0 Production on Thu Oct 26 09:00:54 2017
+
+Copyright (c) 1982, 2013, Oracle.  All rights reserved.
+
+
+Connected to:
+Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, OLAP, Data Mining and Real Application Testing options
+
+SQL> SQL> SQL> SQL> SQL> 
+PL/SQL procedure successfully completed.
+
+Elapsed: 03:02:27.37
+SQL> Disconnected from Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, OLAP, Data Mining and Real Application Testing options
+
+SQL*Plus: Release 11.2.0.4.0 Production on Thu Oct 26 12:49:21 2017
+
+Copyright (c) 1982, 2013, Oracle.  All rights reserved.
+
+
+Connected to:
+Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, OLAP, Data Mining and Real Application Testing options
+
+SQL> SQL> SQL> SQL> SQL> 
+PL/SQL procedure successfully completed.
+
+Elapsed: 03:01:22.68
+SQL> Disconnected from Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, OLAP, Data Mining and Real Application Testing options
+
+SQL*Plus: Release 11.2.0.4.0 Production on Thu Oct 26 17:48:53 2017
+
+Copyright (c) 1982, 2013, Oracle.  All rights reserved.
+
+
+Connected to:
+Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, OLAP, Data Mining and Real Application Testing options
+
+SQL> SQL> SQL> SQL> SQL> 
+PL/SQL procedure successfully completed.
+
+Elapsed: 03:17:56.08
+SQL> Disconnected from Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, OLAP, Data Mining and Real Application Testing options
+
+SQL*Plus: Release 11.2.0.4.0 Production on Fri Oct 27 09:36:36 2017
+
+Copyright (c) 1982, 2013, Oracle.  All rights reserved.
+
+
+Connected to:
+Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, OLAP, Data Mining and Real Application Testing options
+
+SQL> SQL> SQL> SQL> SQL> 
+PL/SQL procedure successfully completed.
+
+Elapsed: 03:40:49.97
+SQL> Disconnected from Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, OLAP, Data Mining and Real Application Testing options

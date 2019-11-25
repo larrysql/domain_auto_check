@@ -1,0 +1,266 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title></title>
+    <!--<meta http-equiv="refresh" content="10">-->
+    <link rel="stylesheet" type="text/css" href="../static/Styles/admin-all.css" />
+    <link rel="stylesheet" type="text/css" href="../static/Styles/base.css"/>
+    <link rel="stylesheet" type="text/css" href="../static/Styles/bootstrap.min.css"/>
+    <link rel="stylesheet" type="text/css" href="../static/Styles/select2.min.css"/>
+    <script type="text/javascript" src="../static/Scripts/jquery-1.7.2.js"></script>
+    <script type="text/javascript" src="../static/Scripts/jquery-ui-1.8.22.custom.min.js"></script>
+    <script type="text/javascript" src="../static/Scripts/select2.min.js"></script>
+    <script type="text/javascript" src="../static/Scripts/zh-CN.js"></script>
+    <link rel="stylesheet" type="text/css" href="../static/Styles/ui-lightness/jquery-ui-1.8.22.custom.css" />
+    <link rel="stylesheet" type="text/css" href="../static/Styles/formui.css"/>
+
+    <!--<script type="text/javascript" src="../static/Scripts/tb.js"></script> -->
+    <style type="text/css">
+    table.gridtable {
+        width:90%;
+    	font-family: verdana,arial,sans-serif;
+    	color:#333333;
+    	border-width: 1px;
+    	border-color: #666666;
+    	border-collapse: collapse;
+       /* background-color:#ECECFF;*/
+    }
+    table.gridtable th {
+    	border-width: 0px;
+    	padding: 8px;
+    	border-style: solid;
+    	border-color: #666666;
+    	/*background-color: #ECECFF;*/
+        font-size:12px;
+        text-align:left;
+    }
+    table.gridtable td {
+    	border-width: 0px;
+    	padding: 8px;
+    	border-style: solid;
+    	border-color: #666666;
+    	background-color: #ECECFF;
+        font-size:11px;
+        text-align:left;
+        height:15px;
+    }
+    input{
+                border: 1px solid #ccc;
+                padding: 7px 0px;
+                border-radius: 3px;
+                width:200px;
+                padding-left:5px;
+                -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
+                box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
+                -webkit-transition: border-color ease-in-out .15s,-webkit-box-shadow ease-in-out .15s;
+                -o-transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
+                transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s
+            }
+            input:focus{
+                    border-color: #66afe9;
+                    outline: 0;
+                    -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075),0 0 8px rgba(102,175,233,.6);
+                    box-shadow: inset 0 1px 1px rgba(0,0,0,.075),0 0 8px rgba(102,175,233,.6)
+            }
+    *{margin:0;padding:0;list-style-type:none;outline:none;}
+            a,img{border:0;}
+            body{font:12px/normal "microsoft yahei";}
+            .selectbox{width:600px;height:220px;margin:10px auto;}
+            .selectbox div{float:left;}
+            .selectbox .select-bar{padding:0 20px;}
+            .selectbox .select-bar select{width:200px;height:200px;border:1px #A0A0A4 solid;padding:4px;font-size:12px;font-family:"microsoft yahei";}
+            .btn-bar{}
+            .btn-bar p{margin-top:16px;}
+            .btn-bar p .btn{width:50px;height:30px;cursor:pointer;font-family:simsun;font-size:14px;}
+    </style>
+    <script>
+        $(function(){
+        $("#demo").select2({
+        theme: "classic",
+        tags: true,
+        width:"200" ,
+        maximumSelectionLength: 1
+        });
+        });
+    </script>
+      <script>
+        $( function() {
+        $( "#datepicker" ).datepicker();
+        } );
+     </script>
+       <script type="text/javascript">
+        
+        function validate_required(field,alerttxt)
+        {
+        with (field)
+          {
+          // if (trim(value)==null||trim(value)=="")
+            if ((value.replace(/(^\s*)|(\s*$)/g, "")==null||value.replace(/(^\s*)|(\s*$)/g, "")=="")&&$('#domain_class option:selected').val()!='公有')
+            {alert(alerttxt);return false}
+          else {return true}
+          }
+        }
+        
+        function validate_form(thisform)
+        {
+        with (thisform)
+          {
+          if (validate_required(email,"邮箱地址不能为空!")==false)
+            {email.focus();return false}
+          if (validate_required(domain_name,"域名不能为空!")==false)
+            {domain_name.focus();return false}
+          if (validate_required(account_name,"账号不能为空!")==false)
+            {account_name.focus();return false}
+          if (validate_required(phone,"手机号不能为空!")==false)
+            {phone.focus();return false}
+          if (validate_required(expire_date,"到期时间不能为空!")==false)
+            {expire_date.focus();return false}
+          if (validate_required(postal_code,"postal_code不能为空!")==false)
+            {postal_code.focus();return false}
+          if (validate_required(user_name,"用户名不能为空!")==false)
+            {user_name.focus();return false}
+          if (validate_required(status,"状态不能为空!")==false)
+            {status.focus();return false}
+          if (validate_required(is_add_firewall,"是否加入防火墙不能为空!")==false)
+            {is_add_firewall.focus();return false}
+          if (validate_required(url,"url不能为空!")==false)
+            {url.focus();return false}
+          }
+        }
+        </script>
+        <script type="text/javascript">
+            $(function(){ 
+            //移到右边
+            $('#add').click(function(){
+            //先判断是否有选中
+            if(!$("#select1 option").is(":selected")){  
+            alert("请选择需要移动的选项")
+            }
+            //获取选中的选项，删除并追加给对方
+            else{
+            $('#select1 option:selected').appendTo('#select2');
+            } 
+            });
+            
+            //移到左边
+            $('#remove').click(function(){
+            //先判断是否有选中
+            if(!$("#select2 option").is(":selected")){  
+            alert("请选择需要移动的选项")
+            }
+            else{
+            $('#select2 option:selected').appendTo('#select1');
+            }
+            });
+            
+            //全部移到右边
+            $('#add_all').click(function(){
+            //获取全部的选项,删除并追加给对方
+            $('#select1 option').appendTo('#select2');
+            });
+            
+            //全部移到左边
+            $('#remove_all').click(function(){
+            $('#select2 option').appendTo('#select1');
+            });
+            
+            //双击选项
+            $('#select1').dblclick(function(){ //绑定双击事件
+            //获取全部的选项,删除并追加给对方
+            $("option:selected",this).appendTo('#select2'); //追加给对方
+            });
+            
+            //双击选项
+            $('#select2').dblclick(function(){
+            $("option:selected",this).appendTo('#select1');
+            });
+            
+            });
+        </script>
+        <script>  
+            function  submitAll(oThis)  
+            {  
+                       var  oData  =  oThis.privs.options  
+                       for  (var  i=0;i<oData.length;i++)  
+                       {  
+                                   oThis.privs_value.value  +=  oData[i].value  +  ",";  
+                                   oThis.privs_text.value  +=  oData[i].text  +  ",";  
+                       }  
+                       return  true;  
+            }  
+        </script>  
+</head>
+<body>
+    <!-- <div class="alert alert-info" id="title">当前位置<b class="tip"></b>ORACLE监控<b class="tip"></b>{{tag}}</div> -->
+   <!-- Table goes in the document BODY -->
+   <div class="alert alert-info" id="title" style="float:left;width:100%;">
+   编辑角色 {{role_name}} 信息
+    </div>
+    <div style="float:left;width:60%;">
+    <form style="margin:0px;display:inline" action="/update_role_priv" method="POST" name="dateform" onsubmit="submitAll(this)">
+        <table class="gridtable">
+            <tbody>
+            <tr>
+                <td>权限:</td>
+                <td>
+                        <div class="selectbox">
+                            <div class="select-bar">
+                                <select multiple="multiple" id="select1">
+                                    {% for row in rs_privs_no %}
+                                        <option value="{{row[0]}}">{{row[1]}}||{{row[2]}}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            
+                            <div class="btn-bar">
+                                <p><span id="add"><input type="button" class="btn" value=">" title="移动选择项到右侧"/></span></p>
+                                <p><span id="add_all"><input type="button" class="btn" value=">>" title="全部移到右侧"/></span></p>
+                                <p><span id="remove"><input type="button" class="btn" value="<" title="移动选择项到左侧"/></span></p>
+                                <p><span id="remove_all"><input type="button" class="btn" value="<<" title="全部移到左侧"/></span></p>
+                            </div>
+                            
+                            <div class="select-bar">
+                                <select multiple="multiple" id="select2" name="privs">
+                                    {% for row in rs_privs %}
+                                        <option value="{{row[0]}}">{{row[1]}}||{{row[2]}}</option>
+                                    {% endfor %}
+                                </select>
+                                <input  type=hidden  name=role_id value="{{role_id}}">  
+                                <input  type=hidden  name=privs_value>  
+                                <input  type=hidden  name=privs_text>  
+                            </div> 
+                        </div>
+                </td>
+
+            </tr>
+        </tbody>
+        </table>
+
+    <div style="text-align:center;">
+    </div>
+         <center>
+            <div id="login_click">  
+                <input value=" 提&nbsp;&nbsp;&nbsp;&nbsp;交 " id="btlogin"  style="width:100px" type="submit">
+            </div> 
+        </center>
+    </form>
+    </div>
+   
+    
+   
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+

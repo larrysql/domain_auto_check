@@ -1,0 +1,838 @@
+#!/usr/local/bin/python
+# -*- coding: utf-8
+import sys,os
+sys.path.append("..")
+from utils.conn_mysql import *
+from utils.tools import *
+from flask import Flask,url_for,jsonify,redirect
+from flask import render_template,Blueprint,abort
+from flask import request,session
+from jinja2 import TemplateNotFound
+import chartkick
+import json
+import time,random,datetime
+import hashlib
+reload(sys)
+sys.setdefaultencoding('utf-8')
+os.environ["NLS_LANG"] = ".UTF8"
+
+mod = Blueprint('domain', __name__,template_folder='templates')
+#===========================================顶级代理树统计==========================================================
+# def rs_to_json(rs,data_type):
+#     l_data = json.dumps([x[0] for x in rs])
+#     s_data = json.dumps([{'name':x[0],'value':x[1]} for x in rs])
+#     if data_type =='data':
+#         json_data = s_data
+#     else:
+#         json_data = l_data
+#     return json_data
+count_per_page = 12
+@mod.route('/domain_query', methods = ['GET', 'POST'])
+def domain_query(signal=None):
+    if session.get('logged_in'):
+        db = conn_db()
+        cursor = db.cursor()
+        username = session['username']
+        rs_role_name = get_role_list(username)
+        l_role_name = [x[0] for x in rs_role_name]
+        if 'admin' in l_role_name or 'domain_admin' in l_role_name:
+            domain_admin_flag = 'Y'
+        else:
+            domain_admin_flag = 'N'
+        if request.method == 'GET':
+            domain_name = request.args.get('domain_name')
+            user_name = request.args.get('user_name')
+            status = request.args.get('status')
+            domain_class = request.args.get('domain_class')
+            signal = request.args.get('signal')
+            if domain_name is None:domain_name = ''
+            if user_name is None:user_name = ''
+            if status is None:status = ''
+            if domain_class is None:domain_class = ''
+        elif request.method == 'POST':
+            # column_name,column_value = request.form.get('column_name'),request.form.get('column_value')
+            domain_name = request.form.get('domain_name')
+            user_name = request.form.get('user_name')
+            status = request.form.get('status')
+            domain_class = request.form.get('domain_class')
+            method = 'POST'
+        sql = '''select d.id,d.domain_name,d.account_name,d.email,d.phone,d.postal_code,d.expire_date,
+                           (case when u.user_name is null then '--' else u.user_name end) as user_name,
+                           (case when status=0  then '可用' else '不可用' end) as status,
+                           d.url,
+                            (case d.is_add_firewall when 0 then '是' else '否' end) is_add_firewall,
+                             d.domain_class
+                           from domain d left join users u
+                           on d.user_id = u.id
+                     where 1 = 1 '''
+        print 'domain_name === ',domain_name
+        if domain_name != '':
+            sql = sql + '''and domain_name like \'%''' + domain_name + '''%\' ''' 
+        if user_name != '':
+            sql = sql + '''and user_name like \'%''' + user_name + '''%\' ''' 
+        if status != '':
+            sql = sql + '''and status = ''' + status + ''' '''
+        if domain_class != '':
+            sql = sql + '''and domain_class = \'''' + domain_class + '''\' ''' 
+        if domain_admin_flag == 'Y':
+            sql = sql + '''order by d.id'''
+        else:
+            sql = sql + '''and user_name = \'''' + username + '''\'order by d.id'''
+        print 'sql======',sql
+        print 'domain_admin_flag====',domain_admin_flag
+        cursor.execute(sql)
+        rs = cursor.fetchall()
+        # #处理分页
+        # #获取页数
+        # record_count = len(rs)
+        # last_count = record_count%count_per_page
+        # if last_count == 0:
+        #     page_count = record_count/count_per_page
+        # else: 
+        #     page_count = record_count/count_per_page + 1
+        # #获取开始记录和结束记录序号
+        # page_no = request.args.get('page_no')
+        # if page_no is None:
+        #     page_no = 1
+        # else:
+        #     page_no = int(page_no)
+        # begin_no = (int(page_no) - 1)*count_per_page
+        # end_no = int(page_no)*count_per_page
+        # #返回结果集
+        # rs = rs[begin_no:end_no]
+        # print page_no,begin_no,end_no,page_count
+        return render_template('domain/domain_query.html',**locals())
+    else:
+        return render_template('login.html')
+
+@mod.route('/add_domain', methods = ['GET', 'POST'])
+def add_domain():
+    if session.get('logged_in'):
+        db = conn_db()
+        cursor = db.cursor()
+        if request.method == 'GET':
+            sql = 'select user_name from users where is_hgame_user = 0  order by user_name'
+            cursor.execute(sql)
+            rs_users = cursor.fetchall()
+            #db.close()
+            return render_template('domain/input_domain_info.html',**locals())
+        elif request.method == 'POST':
+            sql = 'select seq_domain.nextval from dual'
+            cursor.execute(sql)
+            domain_id = cursor.fetchone()[0]
+            domain_name = request.form.get('domain_name')
+            account_name = request.form.get('account_name')
+            email = request.form.get('email')
+            phone = request.form.get('phone')
+            expire_date = request.form.get('expire_date')
+            postal_code = int(request.form.get('postal_code'))
+            user_name = request.form.get('user_name')
+            status = request.form.get('status')
+            url = request.form.get('url')
+            is_add_firewall = request.form.get('is_add_firewall')
+            domain_class = request.form.get('domain_class')
+            # #获取用户ID
+            print 'user_name ====',user_name
+            if user_name is not None:
+                cursor.execute('select id from users u where u.user_name = :user_name',user_name=user_name)
+                user_id = cursor.fetchone()[0]
+            else:
+                user_id = None
+            #处理状态
+            if status == '可用':
+                status = 0
+            else:
+                status = 1
+            #处理防火墙状态
+            if is_add_firewall == '是':
+                is_add_firewall = 0
+            else:
+                is_add_firewall = 1
+
+            #print str(domain_id),domain_name,account_name,email,phone,expire_date,postal_code,user_name,status,url,is_add_firewall,domain_class,user_id
+            #插入到数据库中
+            sql = '''insert into domain(id,account_name,domain_name,email,phone,postal_code,expire_date,status,url,
+                     is_add_firewall,domain_class,user_id) 
+                     values(:domain_id,:account_name,:domain_name,:email,:phone,:postal_code,to_date(:expire_date,'mm/dd/yyyy'),:status,:url,:is_add_firewall,
+                     :domain_class,:user_id) '''
+            cursor.execute(sql,domain_id=domain_id,account_name=account_name,domain_name=domain_name,email=email,phone=phone,postal_code=postal_code,expire_date=expire_date,\
+                            status=status,url=url,is_add_firewall=is_add_firewall,domain_class=domain_class,user_id=user_id)
+            db.commit()
+            #db.close()
+            return redirect('/domain_query?signal=add_domain')
+    else:
+        return render_template('login.html')
+
+
+@mod.route('/update_domain', methods = ['GET', 'POST'])
+def update_domain():
+    if session.get('logged_in'):
+        if request.method == 'GET':
+            domain_id = request.args.get('domain_id')
+            db = conn_db()
+            cursor = db.cursor()
+            sql = ''' select d.id,d.domain_name,d.account_name,d.email,d.phone,
+                             to_char(d.expire_date,'mm/dd/yyyy'),
+                             d.postal_code,
+                             (case when u.user_name is null  then '无' else u.user_name end) as user_name,
+                             (case when d.status=0  then '可用' else '不可用' end) as status,
+                             d.url,(case d.is_add_firewall when 0 then '是' else '否' end) is_add_firewall,
+                             d.domain_class
+                       from domain d left join users u 
+                       on d.user_id = u.id 
+                       where d.id = ''' + domain_id
+            cursor.execute(sql)
+            rs = cursor.fetchone()
+            sql = 'select user_name from users where is_hgame_user = 0  order by user_name'
+            cursor.execute(sql) 
+            rs_users = cursor.fetchall()
+            #db.close()
+            return render_template('domain/update_domain_info.html',**locals())
+        #执行update
+        elif request.method == 'POST':
+            domain_id = request.form.get('domain_id')
+            domain_name = request.form.get('domain_name')
+            account_name = request.form.get('account_name')
+            email = request.form.get('email')
+            phone = request.form.get('phone')
+            expire_date = request.form.get('expire_date')
+            postal_code = int(request.form.get('postal_code'))
+            user_name = request.form.get('user_name')
+            status = request.form.get('status')
+            url = request.form.get('url')
+            is_add_firewall = request.form.get('is_add_firewall')
+            domain_class = request.form.get('domain_class')
+            #建立数据库链接
+            db = conn_db()
+            cursor = db.cursor()
+            print 'user_name=====',user_name,domain_name,status
+            if user_name != None:
+                # #获取用户ID
+                cursor.execute('select id from users u where u.user_name = :user_name',user_name=user_name)
+                user_id = cursor.fetchone()[0]
+            else:
+                user_id = None
+            #处理状态
+            if status == '可用':
+                status = 0
+            else:
+                status = 1
+            #处理防火墙状态
+            if is_add_firewall == '是':
+                is_add_firewall = 0
+            else:
+                is_add_firewall = 1
+            # user_id = 3
+            sql = '''update domain set domain_name = :domain_name,account_name = :account_name,email = :email,phone=:phone,
+                    expire_date=to_date(:expire_date,'mm/dd/yyyy'),postal_code=:postal_code,
+                    user_id = :user_id,status = :status,url = :url,is_add_firewall = :is_add_firewall,
+                    domain_class = :domain_class where id = :domain_id
+                 '''
+            cursor.execute(sql,domain_name=domain_name,account_name=account_name,email=email,phone=phone,expire_date=expire_date,postal_code=postal_code,\
+                            user_id=user_id,status=status,url=url,is_add_firewall=is_add_firewall,domain_class=domain_class,domain_id=domain_id)
+            db.commit()
+            #db.close()
+            return redirect('/domain_query?signal=update_domain')
+    else:
+        return render_template('login.html')
+
+@mod.route('/delete_domain')
+def delete_domain():
+    if session.get('logged_in'):
+        if request.method == 'GET':
+            domain_id = int(request.args.get('domain_id'))
+            db = conn_db()
+            cursor = db.cursor()
+            sql = 'delete from domain where id = :domain_id'
+            cursor.execute(sql,domain_id=domain_id)
+            db.commit()
+            #db.close()
+            return redirect('/domain_query?signal=delete_domain')
+        else:
+            return render_template('login.html')
+    else:
+        return render_template('login.html')
+
+@mod.route('/disable_domain')
+def disable_domain():
+    if session.get('logged_in'):
+        if request.method == 'GET':
+            domain_id = int(request.args.get('domain_id'))
+            status = int(request.args.get('status'))
+            if status == 1:
+                status,signal = 0,'enable_domain'
+            else:
+                status,signal = 1,'disable_domain'
+            db = conn_db()
+            cursor = db.cursor()
+            sql = 'update domain set  status = :status where id = :domain_id'
+            cursor.execute(sql,domain_id=domain_id,status=status)
+            db.commit()
+            #db.close()
+            return redirect('/domain_query?signal='+signal)
+        else:
+            return render_template('login.html')
+    else:
+        return render_template('login.html')
+
+@mod.route('/domain_mon')
+def domain_mon():
+    if session.get('logged_in'):
+        if request.method == 'GET':
+            username = session['username']
+            db = conn_db()
+            cur = db.cursor()
+            sql = ''' select * from(
+                             select dl.loc_name,d.domain_name,dop.open_pct*100 open_pct,dml.time_namelookup,dml.time_total,http_code
+                             from
+                                domain_location dl
+                                left join
+                                (select location_id,domain_id,time_namelookup,time_total,http_code 
+                                 from domain_mon_log where mon_id = (select max(mon_id) from domain_open_pct) 
+                                      and (http_code = '200' or http_code = '302')
+                                 ) dml 
+                            on dl.id = dml.location_id
+                                 left join
+                                (select domain_id,open_pct 
+                                 from domain_open_pct 
+                                 where mon_id = (select max(mon_id) from domain_open_pct)
+                                 ) dop
+                            on dml.domain_id = dop.domain_id
+                                left join domain d
+                            on dop.domain_id = d.id
+                            where d.id in(select domain_id from domain_group_domain 
+                                            where 
+                                                group_id in
+                                                (select group_id from domain_group_user dgu 
+                                                 where 
+                                                      dgu.user_id = (select id from users where user_name = :user_name)
+                                                )
+                                        )
+                            ) where open_pct>60  order by loc_name,time_total
+                '''
+            cur.execute(sql,user_name=username)
+            rs1 = cur.fetchall()
+            sql = ''' select * from(
+                             select dl.loc_name,d.domain_name,dop.open_pct*100 open_pct,dml.time_namelookup,dml.time_total,http_code
+                             from
+                                domain_location dl
+                                left join
+                                (select location_id,domain_id,time_namelookup,time_total,http_code
+                                 from domain_mon_log where mon_id = (select max(mon_id) from domain_mon_log) 
+                                       and (http_code = '200' or http_code = '302')
+                                 ) dml 
+                            on dl.id = dml.location_id
+                                 left join
+                                (select domain_id,open_pct 
+                                 from domain_open_pct 
+                                 where mon_id = (select max(mon_id) from domain_open_pct)
+                                 ) dop
+                            on dml.domain_id = dop.domain_id
+                                left join domain d
+                            on dop.domain_id = d.id
+                             where d.id in(select domain_id from domain_group_domain 
+                                            where 
+                                                group_id in
+                                                (select group_id from domain_group_user dgu 
+                                                 where 
+                                                      dgu.user_id = (select id from users where user_name = :user_name)
+                                                )
+                                        )
+                            ) where open_pct<60  order by loc_name,time_total
+                '''
+            cur.execute(sql,user_name=username)
+            rs2 = cur.fetchall()
+            sql = ''' select * from(
+                             select dl.loc_name,d.domain_name,dop.open_pct*100 open_pct,dml.time_namelookup,dml.time_total,http_code
+                             from
+                                domain_location dl
+                                left join
+                                (select location_id,domain_id,time_namelookup,time_total,http_code
+                                 from domain_mon_log where mon_id = (select max(mon_id) from domain_mon_log) 
+                                      and http_code <> '200' and http_code <> '302' 
+                                 ) dml 
+                            on dl.id = dml.location_id
+                                 left join
+                                (select domain_id,open_pct 
+                                 from domain_open_pct 
+                                 where mon_id = (select max(mon_id) from domain_open_pct)
+                                 ) dop
+                            on dml.domain_id = dop.domain_id
+                                left join domain d
+                            on dop.domain_id = d.id
+                             where d.id in(select domain_id from domain_group_domain 
+                                            where 
+                                                group_id in
+                                                (select group_id from domain_group_user dgu 
+                                                 where 
+                                                      dgu.user_id = (select id from users where user_name = :user_name)
+                                                )
+                                        )
+                            )  order by loc_name,time_total
+                '''
+            cur.execute(sql,user_name=username)
+            rs3 = cur.fetchall()
+            rs = rs1 + rs2 + rs3
+            l = [x[0] for x in rs]
+            # l_loc = list(set(l)).sort(key=l.index)
+            l_loc = list(set(l))
+            l_all = []
+            for loc in l_loc:
+                l_tmp = [loc]
+                l_info = [[x[1],x[2],x[3],x[4],x[5]] for x in rs if x[0]==loc]
+                l_tmp.append(l_info)
+                l_all.append(l_tmp)
+            return render_template('domain/mon_domain.html',**locals())
+        else:
+            return render_template('login.html')
+    else:
+        return render_template('login.html')
+
+@mod.route('/domain_push')
+def domain_push():
+    if request.method == 'GET':
+        ip = request.args.get('ip')
+        request_type = request.args.get('type')
+        db = conn_db()
+        cur = db.cursor()
+        #判断请求类型
+        if request_type == 'm':
+            tab_name = 'domain_push_m'
+            push_type = 'm'
+        else:
+            tab_name = 'domain_push'
+            push_type = 'p'
+        #获取该ip所属大区
+        num = ip_to_num(ip)
+        sql = '''select loc_id,loc_name from domain_ip_location dil 
+                 where 
+                         :num between begin_ip_num and end_ip_num
+                         and loc_id in(select id from domain_province)
+                ''' 
+        cur.execute(sql,num=num)
+        rs1 = cur.fetchone()
+        if rs1:
+            #print 'ip=====',rs1[0],rs1[1].encode('gbk')
+            print 'ip=====',ip,rs1[0],rs1[1]
+            prov_id = rs1[0]
+            sql = '''select d.domain_name,dp.rank_num rank,dp.BIG_LOC_ID,dp.stat_id
+                 from 
+                     domain d ,%s dp 
+                 where 
+                      d.id = dp.DOMAIN_ID 
+                      and dp.BIG_LOC_ID = (select big_loc_id from domain_big_prov_map where prov_id = :prov_id)
+                      and dp.stat_id = (select max(stat_id) from %s)
+                '''%(tab_name,tab_name)
+            cur.execute(sql,prov_id=prov_id)
+        else:
+            print 'ip=====',ip
+            prov_id = ''
+            sql = '''select d.domain_name,dp.rank_num rank,dp.BIG_LOC_ID,dp.stat_id
+                 from 
+                     domain d ,%s dp 
+                 where 
+                      d.id = dp.DOMAIN_ID 
+                      and dp.BIG_LOC_ID = 0
+                      and dp.stat_id = (select max(stat_id) from %s)
+                '''%(tab_name,tab_name)
+            cur.execute(sql)
+        #cur.rowfactory = makedict(cur)
+        rs =cur.fetchall()
+        l = [x[:2] for x in rs]
+        j = json.dumps(l)
+        #开始将信息插入到访问记录表domain_push_log中
+        ip_loc_id = prov_id
+        ip_big_loc_id,push_stat_id = rs[0][2],rs[0][3]
+        try:
+            sql = '''insert into domain_push_log(id,ip,num_ip,ip_loc_id,ip_big_loc_id,push_type,push_stat_id) 
+                     values(seq_domain_push_log.nextval,:ip,:num_ip,:ip_loc_id,:ip_big_loc_id,:push_type,:push_stat_id)
+                   '''
+            cur.execute(sql,ip=ip,num_ip=num,ip_loc_id=ip_loc_id,ip_big_loc_id=ip_big_loc_id,push_type=push_type,push_stat_id=push_stat_id)
+            db.commit()
+            cur.close()
+            db.close()
+        except Exception,e:
+            print '将信息插入到访问记录表domain_push_log中失败' + str(e)
+            cur.close()
+            db.close()
+        #print type(j)
+        return j
+
+#域名推送统计
+@mod.route('/domain_push_stat')
+def domain_push_stat():
+    if session.get('logged_in'):
+        db = conn_db()
+        cursor = db.cursor()
+        username = session['username']
+        if request.method == 'GET':
+            push_type = request.args.get('push_type')
+            sort_order = request.args.get('sort_order')
+            if push_type == 'p':
+                str_push_type = 'PC端'
+                view_name = 'v_domain_push_log'
+            elif push_type == 'm':
+                str_push_type = '移动端'
+                view_name = 'v_domain_push_log_m'
+            else:
+                push_type,str_push_type = 'p','PC端'
+                view_name = 'v_domain_push_log'
+            sql = '''select rownum,a.*
+                    from (
+                        select domain_name,count(*) cnt , '%s' as push_type
+                         from 
+                             %s 
+                         where 
+                             push_type = '%s'
+                         group by domain_name 
+                         order by 2 desc
+                     ) a
+                   ''' % (str_push_type,view_name,push_type)
+            print sql
+            cursor.execute(sql)
+            rs = cursor.fetchall()
+            print rs
+    return render_template('domain/domain_push_stat.html',**locals())
+###################################用户管理###################################################################################
+@mod.route('/role_admin')
+def role_admin():
+    if session.get('logged_in'):
+        db = conn_db()
+        cursor = db.cursor()
+        username = session['username']
+        # role_name = get_role_name(username)
+        if request.method == 'GET':
+            signal = request.args.get('signal')
+            sql = '''select id,role_name,comm,insert_time   from role'''
+            cursor.execute(sql)
+            rs = cursor.fetchall()
+            return render_template('domain/role_query.html',**locals())
+            # return render_template('domain/tree4_demo.html',**locals())
+        else:
+            return render_template('login.html')
+    else:
+        return render_template('login.html')
+
+@mod.route('/add_role', methods = ['GET', 'POST'])
+def add_role():
+    if session.get('logged_in'):
+        if request.method == 'GET':
+            return render_template('domain/input_role_info.html',**locals())
+    else:
+        return render_template('login.html')
+
+@mod.route('/add_role_json', methods = ['GET', 'POST'])
+def add_role_json():
+    if session.get('logged_in'):
+        if request.method == 'POST':
+            role_name = request.form.get('role_name')
+            comment = request.form.get('comment')
+            try:
+                db = conn_db()
+                cursor = db.cursor()
+                sql = 'select seq_users.nextval from dual'
+                cursor.execute(sql)
+                role_id = cursor.fetchone()[0]
+                sql = '''insert into role(id,role_name,comm) values(:role_id,:role_name,:comm)'''
+                cursor.execute(sql,role_id=role_id,role_name=role_name,comm=comment)
+                db.commit()
+                cursor.close()
+                msg = 200
+            except Exception,e:
+                if 'ORA-00001' in str(e):
+                    msg = '增加角色失败,已经存在相同的角色名！'
+                else:
+                    msg = '增加失败,错误：' + str(e)
+            d = {'resultCode':msg}
+            j = json.dumps(d)
+            return j
+    else:
+        return render_template('login.html')
+
+@mod.route('/update_role', methods = ['GET', 'POST'])
+def update_role():
+    if session.get('logged_in'):
+        if request.method == 'GET':
+            role_id = request.args.get('role_id')
+            db = conn_db()
+            cursor = db.cursor()
+            sql = 'select id,role_name,comm,insert_time from role where id = :role_id'
+            cursor.execute(sql,role_id=role_id)
+            rs = cursor.fetchone()
+            return render_template('domain/update_role_info.html',**locals())
+        else:
+            db = conn_db()
+            cursor = db.cursor()
+            role_id = request.form.get('role_id')
+            role_name = request.form.get('role_name')
+            role_comm = request.form.get('role_comm')
+            sql = 'update role set role_name = :role_name,comm = :role_comm where id = :role_id'
+            cursor.execute(sql,role_name=role_name,role_comm=role_comm,role_id=role_id)
+            db.commit()
+            return redirect('/role_admin?signal=update_role')
+    else:
+        return render_template('login.html')
+
+@mod.route('/update_role_priv',methods = ['GET', 'POST'])
+def update_role_priv():
+    if session.get('logged_in'):
+        if request.method == 'GET':
+            role_id = request.args.get('role_id')
+            db = conn_db()
+            cursor = db.cursor()
+            #获取角色名称
+            sql = ''' select role_name from role where id = :role_id''' 
+            cursor.execute(sql,role_id=role_id)
+            rs_role = cursor.fetchone()
+            role_name = rs_role[0]
+            #获取角色拥有的权限
+            sql = ''' select p.id,pp.priv_name ppriv_name,p.priv_name
+                      from 
+                          privs p,privs pp,priv_role pr
+                      where 
+                          p.pid = pp.id
+                          and p.id = pr.priv_id
+                          and pr.role_id = :role_id  
+                          order by ppriv_name'''
+            cursor.execute(sql,role_id=role_id)
+            rs_privs = cursor.fetchall()
+            #获取角色未拥有的权限
+            sql = ''' select p.id,pp.priv_name ppriv_name,p.priv_name
+                      from privs p,privs pp
+                      where 
+                          p.pid = pp.id
+                          and not exists (
+                                      select 1 from priv_role pr where role_id = :role_id and pr.priv_id = p.id
+                                      )
+                          order by ppriv_name
+                    '''
+            cursor.execute(sql,role_id=role_id)
+            rs_privs_no = cursor.fetchall()
+            return render_template('domain/update_role_priv.html',**locals())
+        else:
+            db = conn_db()
+            cursor = db.cursor()
+            role_id = request.form.get('role_id')
+            privs = request.form.get('privs_value')
+            l_priv = privs.strip(',').split(',')
+            print 'l_priv===================',l_priv
+            sql = 'delete from priv_role where role_id = :role_id'
+            cursor.execute(sql,role_id=role_id)
+            if len(l_priv)>0:
+                for priv_id in l_priv:
+                    sql = 'insert into priv_role values(seq_priv_role.nextval,:role_id,:priv_id)'
+                    cursor.execute(sql,role_id=role_id,priv_id=priv_id)
+                    db.commit()
+            else:
+                pass
+            return redirect('/role_admin?signal=update_role_priv')
+    else:
+        return render_template('login.html')
+
+@mod.route('/role_delete_json', methods = ['GET', 'POST'])
+def role_delete_json():
+    if session.get('logged_in'):
+        if request.method == 'POST':
+            role_id = request.form.get('role_id')
+            try:
+                db = conn_db()
+                cursor = db.cursor()
+                sql = '''delete from role where id = :role_id'''
+                cursor.execute(sql,role_id=role_id)
+                db.commit()
+                msg = 200
+            except Exception,e:
+                msg = '增加角色失败！错误：' + str(e)
+            d = {'resultCode':msg}
+            j = json.dumps(d)
+            return j
+        else:
+            return render_template('login.html')
+    else:
+        return render_template('login.html')
+
+@mod.route('/user_admin')
+def user_admin():
+    if session.get('logged_in'):
+        db = conn_db()
+        cursor = db.cursor()
+        username = session['username']
+        if request.method == 'GET':
+            signal = request.args.get('signal')
+            sql = '''
+                    select id,
+                           user_name,
+                           email,
+                           insert_time,
+                           listagg(role_name,',') within group(order by role_name) as role
+                    from (
+                        select u.id,u.user_name,u.email,u.insert_time,r.role_name 
+                        from 
+                            users u left join user_role ur 
+                            on 
+                            u.id = ur.user_id
+                            left join role r
+                            on ur.role_id = r.id
+                        )
+                    group by id,user_name,email,insert_time
+                    '''
+            cursor.execute(sql)
+            rs = cursor.fetchall()
+            return render_template('domain/user_query.html',**locals())
+            # return render_template('domain/tree4_demo.html',**locals())
+        else:
+            return render_template('login.html')
+    else:
+        return render_template('login.html')
+@mod.route('/update_user',methods = ['GET', 'POST'])
+def update_user():
+    if session.get('logged_in'):
+        db = conn_db()
+        cursor = db.cursor()
+        username = session['username']
+        if request.method == 'GET':
+            user_id = request.args.get('user_id')
+            db = conn_db()
+            cursor = db.cursor()
+            sql = 'select id,user_name,email,insert_time from users where id = :user_id'
+            cursor.execute(sql,user_id=user_id)
+            rs = cursor.fetchone()
+            return render_template('domain/update_user_info.html',**locals())
+        else:
+            db = conn_db()
+            cursor = db.cursor()
+            user_id = request.form.get('user_id')
+            user_name = request.form.get('user_name')
+            email = request.form.get('email')
+            sql = 'update users set user_name = :user_name,email = :email where id = :user_id'
+            cursor.execute(sql,user_name=user_name,email=email,user_id=user_id)
+            db.commit()
+            return redirect('/user_admin?signal=update_user')
+    else:
+        return render_template('login.html')
+
+@mod.route('/add_user', methods = ['GET', 'POST'])
+def add_user():
+    if session.get('logged_in'):
+        db = conn_db()
+        cursor = db.cursor()
+        if request.method == 'GET':
+            return render_template('domain/input_user_info.html',**locals())
+        elif request.method == 'POST':
+            sql = 'select seq_users.nextval from dual'
+            cursor.execute(sql)
+            user_id = cursor.fetchone()[0]
+            user_name = request.form.get('user_name')
+            email = request.form.get('email')
+            password = request.form.get('password1')
+            password_md5 = hashlib.md5(password).hexdigest()
+            sql = '''insert into users(id,user_name,password,email) values(:user_id,:user_name,:password,:email)'''
+            cursor.execute(sql,user_id=user_id,user_name=user_name,password=password_md5,email=email)
+            db.commit()
+            cursor.close()
+            return redirect('/user_admin?signal=add_user')
+    else:
+        return render_template('login.html')
+
+@mod.route('/delete_user')
+def delete_user():
+    if session.get('logged_in'):
+        if request.method == 'GET':
+            db = conn_db()
+            cursor = db.cursor()
+            user_id = request.args.get('user_id')
+            sql = '''delete from users where id = :user_id'''
+            cursor.execute(sql,user_id=user_id)
+            db.commit()
+            cursor.close()
+            return redirect('/user_admin?signal=delete_user')
+        else:
+            return render_template('login.html')
+    else:
+        return render_template('login.html')
+
+@mod.route('/update_user_role', methods = ['GET', 'POST'])
+def update_user_role():
+    if session.get('logged_in'):
+        if request.method == 'GET':
+            db = conn_db()
+            cursor = db.cursor()
+            user_id = request.args.get('user_id')
+            #获取用户名
+            sql = 'select user_name from users where id = :user_id'
+            cursor.execute(sql,user_id=user_id)
+            user_name = cursor.fetchone()[0]
+            #获取用户拥有的角色
+            sql = '''select id,role_name from role where id in(select role_id from user_role where user_id = :user_id) '''
+            cursor.execute(sql,user_id=user_id)
+            rs_role = cursor.fetchall()
+            #获取用户不拥有的角色
+            sql = '''select id,role_name from role r
+                     where 
+                        not exists 
+                            (select 1 from user_role ur where ur.role_id = r.id and ur.user_id = :user_id) 
+                    '''
+            cursor.execute(sql,user_id=user_id)
+            rs_other_role = cursor.fetchall()
+            cursor.close()
+            return render_template('domain/update_user_role.html',**locals())
+        else:
+            db = conn_db()
+            cursor = db.cursor()
+            user_id = request.form.get('user_id')
+            privs = request.form.get('privs_value')
+            l_priv = privs.strip(',').split(',')
+            print 'l_priv===================',l_priv
+            sql = 'delete from user_role where user_id = :user_id'
+            cursor.execute(sql,user_id=user_id)
+            if len(l_priv)>0:
+                for role_id in l_priv:
+                    sql = 'insert into user_role values(seq_user_role.nextval,:user_id,:role_id)'
+                    cursor.execute(sql,user_id=user_id,role_id=role_id)
+                db.commit()
+                cursor.close()
+            else:
+                pass
+            return redirect('/user_admin?signal=update_user_role')
+    else:
+        return render_template('login.html')
+
+@mod.route('/priv_query')
+def priv_query():
+    if session.get('logged_in'):
+        db = conn_db()
+        cursor = db.cursor()
+        username = session['username']
+        if request.method == 'GET':
+            return render_template('domain/priv_query.html',**locals())
+    else:
+        return render_template('login.html')
+
+@mod.route('/get_priv_json')
+def get_priv_json():
+    if session.get('logged_in'):
+        db = conn_db()
+        cursor = db.cursor()
+        username = session['username']
+        if request.method == 'GET':
+            sql = ''' select id,priv_name from privs where pid = 0'''
+            cursor.execute(sql)
+            rs = cursor.fetchall()
+            l = []
+            for row in rs:
+                root_id,root_name = row[0],row[1]
+                sql = '''select id,priv_name,priv_func from privs where pid = :root_id'''
+                cursor.execute(sql,root_id=root_id)
+                child_rs = cursor.fetchall()
+                d = {'name':root_name,'id':root_id}
+                l_child = []
+                for child in child_rs:
+                    d_child = {'name':child[1],'id':child[0]}
+                    l_child.append(d_child)
+                d['children'] = l_child
+                l.append(d)
+            data = json.dumps(l)
+        return data 
+    else:
+        return render_template('login.html')
+
