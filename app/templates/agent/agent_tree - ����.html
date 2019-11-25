@@ -43,35 +43,54 @@
 </head>
 <body>
     <div class="alert alert-info" id="title">当前位置<b class="tip"></b>ORACLE监控<b class="tip"></b>{{tag}}</div>
-
    <!-- Table goes in the document BODY -->
     <table class="gridtable">
     <tr>
-    	<th>主机名</th><th>实例名</th><th>等待事件(top 5)</th><th>等待时间(秒)</th><th>等待时间占比(%)</th><th>等待类别</th><th>采样时间</th><th>详情</th>
+    	<th width=10%>总代名称</th><th width=50%>代理树</th><th>代理级数</th><th>投注额</th><th>充值额</th><th>注册时间</th>
     </tr>
-    {% for entry in entries %}
+    {% for k in entries %}
         <tr>
-            <td rowspan={{entry|count}}>{{entry[0].host_name}}</td>
-            <td rowspan={{entry|count}}>{{entry[0].inst_name}}</td>
-            <td align="left">{{entry[0].event_name}}</td>
-            <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{entry[0].total_waited_delta}}</td>
-            <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{entry[0].waited_pct}}</td>
-            <td>{{entry[0].wait_class}}</td>
-            <td rowspan={{entry|count}}>{{entry[0].snap_time}}</td>
-            <td rowspan={{entry|count}}><a href="/ora_event_detail?inst_id={{entry[0].inst_id}}&period=1">查看图表</a></td>
-        {% set i= 0 %}
-        {% for x in entry %}
-            {% if i>0 %}
-            <td class="td_event">{{x.event_name}}</td>
-            <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{x.total_waited_delta}}</td>
-            <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{x.waited_pct}}</td>
-            <td>{{x.wait_class}}</td>
-            {% endif %}
-            {% set i = i + 1 %}
+            <td rowspan={{entries[k]|count}}>{{k}}</td>
+            <!-- <td>{{entries[k][0][0]}}</td> -->
+            <td>
+                {%set e = entries[k][0][0][(entries[k][0][0]|length)-1]%}
+                {% for x in entries[k][0][0] %}
+                    {% if x == e %}
+                        <a href="/agent_tree?user_name={{x}}">{{x}}</a>
+                    {% else %}
+                        <a href="/agent_tree?user_name={{x}}">{{x}}</a>- 
+                    {% endif %}
+                {% endfor %}
+            </td>
+            <td>{{entries[k][0][1]}}</td>
+            <td rowspan={{entries[k]|count}}>{{entries[k][0][2]}}</td>
+            <td rowspan={{entries[k]|count}}>{{entries[k][0][3]}}</td>
+            <td rowspan={{entries[k]|count}}>{{entries[k][0][4]}}</td>
         </tr>
-        {% endfor %}
+            {% for x in entries[k] %}
+                {% if loop.index0>0 %}
+                <tr>
+                <td>  
+                    {%set e = x[0][(x[0]|length)-1]%}
+                     {% for y in x[0] %}
+                        {% if y == e %}
+                        <a href="/agent_tree?user_name={{y}}">{{y}}</a>
+                        {% else %}
+                        <a href="/agent_tree?user_name={{y}}">{{y}}</a>-
+                        {% endif %}
+                     {% endfor %}
+                </td>
+                <td>{{x[1]}}</td>
+                </tr>
+                {% endif %}
+            {% endfor %}
     {% endfor %}
     </table>
+
+<a href="/agent_tree?page_no={{page_no-1}}">上一页</a>
+<span id ="page_display" style="display: inline">当前页{{page_no}}</span>
+<a href="/agent_tree?page_no={{page_no+1}}">下一页</a>
+
 </body>
 </html>
 
