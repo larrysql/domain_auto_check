@@ -9,7 +9,7 @@ import cx_Oracle
 # 连接数据库　
 def conn_mysql():
     try:
-        conn = MySQLdb.connect(host='172.16.110.165',user='powerm',passwd='powerm',db='powerm',port=3310,cursorclass = MySQLdb.cursors.DictCursor)
+        conn = MySQLdb.connect(host='172.16.110.165',user='powerm',passwd='xxxxx',db='powerm',port=3310,cursorclass = MySQLdb.cursors.DictCursor)
         conn.set_character_set('utf8')
         return conn
     except Exception, e:
@@ -18,7 +18,7 @@ def conn_mysql():
 
 def conn_mysql_l():
     try:
-        conn = MySQLdb.connect(host='172.16.110.165',user='powerm',passwd='powerm',db='powerm',port=3310)
+        conn = MySQLdb.connect(host='172.16.110.165',user='powerm',passwd='xxxxx',db='powerm',port=3310)
         conn.set_character_set('utf8')
         return conn
     except Exception, e:
@@ -37,7 +37,7 @@ def conn_ora(inst_id):
         return dbora
     except Exception,e:
         print '!!!!!!!!!!!!!!!!11',e
-def conn_db(username='hgame',password='ora_0046',host='10.20.1.151',port=1521,db_name='bidb'):
+def conn_db(username='hgame',password='xxxxxx',host='10.20.1.151',port=1521,db_name='bidb'):
      dsn = host + ':' + str(port) + '/' + db_name
      db = cx_Oracle.connect(username,password,dsn)
      return db
